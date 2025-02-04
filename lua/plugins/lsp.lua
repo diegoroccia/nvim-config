@@ -14,6 +14,8 @@ return {
             vim.lsp.enable("luals")
             vim.lsp.enable("gopls")
             vim.lsp.enable("pyright")
+            vim.lsp.enable("ruff_lsp")
+            vim.lsp.enable("tsserver")
 
             vim.api.nvim_create_autocmd('LspAttach', {
                 callback = function(args)
@@ -25,8 +27,8 @@ return {
 
                     if client:supports_method('textDocument/completion') then
                         -- Enable auto-completion
-                        vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
-                        vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+                        -- vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+                        -- vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
                     end
 
                     if client:supports_method('textDocument/formatting') then
@@ -34,7 +36,9 @@ return {
                         vim.api.nvim_create_autocmd('BufWritePre', {
                             buffer = args.buf,
                             callback = function()
-                                vim.lsp.buf.format({ bufnr = args.buf, id = client.id })
+                                if client ~= nil then
+                                    vim.lsp.buf.format({ bufnr = args.buf, id = client.id })
+                                end
                             end,
                         })
                     end
@@ -75,6 +79,8 @@ return {
                     map("K", vim.lsp.buf.hover, "Hover Documentation")
                     map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
                     map("<leader>=", vim.lsp.buf.format, "Format Buffer")
+                    map("<leader>sd", Snacks.picker.diagnostics, "Diagnostics")
+                    -- map("<leader>sd", Snacks.picker.diagnostics_buffer, "Buffer Diagnostics")
                 end,
             })
         end
