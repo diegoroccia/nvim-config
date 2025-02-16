@@ -5,6 +5,9 @@ return {
     dependencies = {
         "nvim-tree/nvim-web-devicons",
     },
+    keys = {
+        { "<leader>f", "<cmd>NvimTreeToggle<cr>", desc = "NvimTree" },
+    },
     config = function()
         local setup, nvimtree = pcall(require, "nvim-tree")
         if not setup then return end

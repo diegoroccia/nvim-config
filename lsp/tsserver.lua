@@ -1,6 +1,24 @@
 local M = {
-    init_options = { hostInfo = 'neovim' },
     cmd = { 'typescript-language-server', '--stdio' },
+    init_options = {
+        hostInfo = 'neovim',
+        completions = {
+            completeFunctionCalls = true,
+        },
+
+        preferences = {
+            includeInlayParameterNameHints = 'all',
+            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+            includeInlayFunctionParameterTypeHints = true,
+            includeInlayVariableTypeHints = true,
+            includeInlayPropertyDeclarationTypeHints = true,
+            includeInlayFunctionLikeReturnTypeHints = true,
+            includeInlayEnumMemberValueHints = true,
+            -- importModuleSpecifierPreference = 'non-relative',
+            importModuleSpecifierPreference = "relative",
+            importModuleSpecifierEnding = "minimal",
+        },
+    },
     filetypes = {
         'javascript',
         'javascriptreact',
