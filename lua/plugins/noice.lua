@@ -24,10 +24,4 @@ return {
             "MunifTanjim/nui.nvim",
         },
     },
-    {
-        "j-hui/fidget.nvim",
-        opts = {
-            -- options
-        },
-    }
 }

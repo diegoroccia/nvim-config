@@ -7,6 +7,7 @@ return {
         "williamboman/mason.nvim",
         dependencies = {
             "WhoIsSethDaniel/mason-tool-installer.nvim",
+            "j-hui/fidget.nvim",
         },
         config = function()
             require("mason").setup()
@@ -16,6 +17,7 @@ return {
             vim.lsp.enable("pyright")
             vim.lsp.enable("ruff_lsp")
             vim.lsp.enable("tsserver")
+            vim.lsp.enable("yamlls")
 
             vim.api.nvim_create_autocmd('LspAttach', {
                 callback = function(args)

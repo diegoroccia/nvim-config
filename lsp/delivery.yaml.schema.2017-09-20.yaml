@@ -1,0 +1,890 @@
+type: object
+required:
+- version
+- pipeline
+properties:
+  version:
+    description: Format version
+    type: string
+    pattern: '^\d{4}-\d{2}-\d{2}'
+  dependencies:
+    description: List of dependency declarations
+    type: array
+    items:
+      description: Dependency declaration
+      type: object
+      required:
+      - id
+      - type
+      - ref
+      properties:
+        id:
+          description: Human readable id for dependency
+          type: string
+          pattern: '^[a-zA-Z_][a-zA-Z0-9_-]+$'
+        type:
+          description: Dependency type
+          type: string
+          enum:
+          - docker
+          - overlay
+        ref:
+          description: Dependency ref (full artifact coordinates without version)
+          type: string
+        autostart_on_update:
+          description: Whether to autostart on dependency change
+          type: boolean
+          default: true
+  allow_concurrent_steps:
+    description: Enable concurrent step execution
+    type: boolean
+  allow_manually_skipping_steps:
+    description: Enable manually skipping step execution
+    type: boolean
+  schedule:
+    description: Enable regular interval scheduling according to the provided cron expression
+    type: string
+  schedule_type:
+    description: Schedule syntax used to process the `schedule` field
+    type: string
+    enum:
+    - UNIX
+    - CRON4J
+    - QUARTZ
+    - SPRING
+    default: UNIX
+  pipeline:
+    description: List of pipeline steps with unique IDs
+    type: array
+    minItems: 1
+    items:
+      description: Pipeline step
+      type: object
+      required:
+      - id
+      - type
+      properties:
+        id:
+          description: Unique ID of the pipeline step, will be used for reporting
+          type: string
+          pattern: '^[a-zA-Z][a-zA-Z0-9_ -]*$'
+        type:
+          description: Type of the pipeline step
+          type: string
+          enum:
+          - script
+          - deploy
+          - overlay
+          - process
+          - traffic
+          - sleep
+          - automated_traffic
+          - gradual_traffic
+        desc:
+          description: Human-readable description of the step.
+          type: string
+        depends_on:
+          description: List of step ids this step depends on in case of concurrent execution is enabled
+          type: array
+          items:
+            description: dependency step id
+            type: string
+        requires_human_approval:
+          description: Whether or not step requires human approval
+          type: boolean
+        allow_manually_skipping_step:
+          description: Whether this step can be manually skipped
+          type: boolean
+      oneOf:
+      - description: Schema for steps of type "deploy"
+        required:
+          - target
+        properties:
+          type: { enum: [ deploy ] }
+          target:
+            type: string
+            description: >
+              ID or alias of the target cluster (according to the Cluster Registry)
+              where the deployment should take place.
+          sources:
+            type: array
+            items:
+             $ref: "#/definitions/DeploySource"
+          timeout:
+            type: string
+            pattern: |-
+              ^(\d+h)?(\d+m)?(\d+s)?$
+            default: 30m
+            description: >
+              How long CDP should give the deployment to complete (successfully or not)
+              before cancelling it.
+          ml_exp:
+            description: Whether the step will use the machine learning CI/CD workflow described in CDP ADR 0013.
+            type: boolean
+            default: false
+          __deployment_service_url:
+            type: string
+            ## These two constraints are commented because they prevent supporting pipeline variables.
+            ## See https://github.bus.zalan.do/automata/issues/issues/3930 for context.
+            # format: uri
+            # pattern: '^https://([a-z0-9-]+\.)+stups(-test)?\.zalan\.do/?$'
+            description: >
+              Deployment Service URL to use for this step.
+              Only available when deploying in the stups-test cluster.
+
+              This setting allows developers of the Deployment Service to run end-to-end tests
+              on non-production instances of the Deployment Service while being able to use the usual CDP UI.
+              It should not be used by anyone else, and could be removed at any time without notice.
+
+      - description: Schema for steps of type "sleep"
+        required:
+          - duration
+        properties:
+          type: { enum: [sleep]}
+          duration:
+            description: The number of time units that have to elapse for the pipeline to continue.
+            type: string
+            pattern: '^((?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?)$'
+      - description: Schema for steps of type "overlay"
+        required:
+        - commands
+        - name
+        properties:
+          type: { enum: [overlay] }
+          overlay:
+            description: Which overlay to use. Optional.
+            type: string
+          env: { $ref: "#/definitions/EnvVars" }
+          name:
+            description: Name of overlay to be created.
+            type: string
+          working_dir:
+            description: Where the repo will be cloned and the scripts will use this as current directory
+            type: string
+            default: /workspace
+          commands:
+            description: Script steps, just for the sake of grouping commands
+            type: array
+            minItems: 1
+            items:
+              description: A group of script commands
+              type: object
+              required:
+              - cmd
+              properties:
+                cmd:
+                  description: Command to execute
+                  type: string
+                desc:
+                  description: Description of the script step
+                  type: string
+                run_as:
+                  description: "User that runs the build steps. `root` by default"
+                  type: string
+      - description: Schema for steps of type "script"
+        required:
+        - commands
+        properties:
+          type: { enum: [script] }
+          requires_human_approval:
+            description: Whether or not step requires human approval
+            type: boolean
+          authenticate_hosts:
+            type: array
+            items:
+              description: A host that the script step needs authentication with.
+              type: string
+          overlay:
+            description: Which overlay to use. Optional.
+            type: string
+          vm_config:
+            description: VM configuration
+            type: object
+            properties:
+              type:
+                description: VM type
+                type: string
+                default: linux
+                enum:
+                  - macos
+                  - linux
+                  - linux_arm
+              provider:
+                description: VM provider
+                type: string
+                default: ec2_pool
+                enum:
+                  - ec2_pool
+                  - anka
+              image:
+                description: |
+                  Image to use as build runtime.
+                  If this value is absent, cdp-builder will use a default image.
+                type: string
+              size:
+                description: Build VM size
+                type: string
+                enum:
+                  - small
+                  - medium
+                  - large
+                  - extra_large
+                  - bare_metal
+              priority:
+                description: VM request priority
+                type: number
+                format: int32
+                minimum: 1
+                maximum: 3
+          vm:
+            description: VM size to use.
+            type: string
+            default: medium
+            enum:
+              - small
+              - medium
+              - large
+              - critical-medium
+              - critical-large
+              - extra-large
+              - android
+              - android-networking
+          env: { $ref: "#/definitions/EnvVars" }
+          working_dir:
+            description: Where the repo will be cloned and the scripts will use this as current directory
+            type: string
+            default: /workspace
+          ml_exp:
+            description: Whether the step will use the machine learning CI/CD workflow described in CDP ADR 0013.
+            type: boolean
+            default: false
+          commands:
+            description: Script steps, just for the sake of grouping commands
+            type: array
+            minItems: 1
+            items:
+              description: A group of script commands
+              type: object
+              required:
+              - cmd
+              properties:
+                cmd:
+                  description: Command to execute
+                  type: string
+                desc:
+                  description: Description of the script step
+                  type: string
+          artifacts:
+            description: List of artifacts that CDP will download from the build VM and publish
+            type: array
+            items:
+              description: Artifact description
+              type: object
+              required:
+              - type
+              properties:
+                type:
+                  description: Type of artifact, determines how it will be published
+                  type: string
+                  enum:
+                  - awslambda
+                  - docs
+                  - deploy
+                  - storage
+                  - ecr
+              oneOf:
+              - description: Schema for artifact of type "ecr"
+                required: [image]
+                properties:
+                  type: { enum: [ecr] }
+                  image:
+                    description: Full name of the image to copy from PierOne to AWS ECR registry
+                    type: string
+              - description: Schema for artifact of type "awslambda"
+                required: [name, path, version]
+                properties:
+                  type: { enum: [awslambda] }
+                  name:
+                    description: Name of the artifact will be a p
+                    type: string
+                    pattern: '^[^/]+$'
+                  path:
+                    description: Path to the file or directory to publish files from
+                    type: string
+                  version:
+                    description: Version string to put into the metadata of the published artifact
+                    oneOf:
+                    - type: string
+#                      pattern: '^[a-zA-Z0-9._-]+$'
+                    - type: number
+              - description: Schema for artifact of type "deploy"
+                required: [name, path]
+                properties:
+                  type: { enum: [deploy] }
+                  name:
+                    description: Name of the deploy artifact. This is the name that's going to be used to identify the resources in the deploy step.
+                    type: string
+                    pattern: '^[^/]+$'
+                  path:
+                    description: Path to the directory containing the manifests to deploy
+                    type: string
+              - description: Schema for artifact of type "docs"
+                required: [name, path]
+                properties:
+                  type: { enum: [docs] }
+                  name:
+                    description: Name of documentation, will be part of docs url
+                    type: string
+                    pattern: '^[^/]+$'
+                  path:
+                    description: Path to the file or directory to publish files from
+                    type: string
+              - description: Schema for artifact of type "storage"
+                required: [subtype, source_path, target_account, target_url]
+                properties:
+                  type: { enum: [storage] }
+                  subtype:
+                    description: Subtype, has to be "s3"
+                    enum: [s3]
+                  x_enable_rclone:
+                    description: >
+                      Whether to use rclone to upload files to S#.
+                    type: boolean
+                    default: false
+                  source_path:
+                    description: Path to the file or directory to publish files from
+                    type: string
+                  target_account:
+                    description: Alias of the account to find the bucket in
+                    type: string
+                  target_url:
+                    description: base URL like "s3://bucket-name/path/to/folder" to upload files into
+                    type: string
+                  target_region:
+                    description: AWS region of the target bucket
+                    type: string
+                    default: eu-central-1
+                  allow_overwrite:
+                    description: Whether to allow file overwrites when uploading
+                    type: boolean
+                  metadata: { $ref: "#/definitions/ArtifactMetadata" }
+                  acl: { $ref: "#/definitions/ArtifactAcl" }
+                  grants: { $ref: "#/definitions/ArtifactGrants" }
+                  headers: { $ref: "#/definitions/ArtifactHeaders" }
+          cache:
+            type: object
+            oneOf:
+              - description: >
+                  Legacy "v1" cache syntax.
+                type: object
+                additionalProperties: false
+                required:
+                  - paths
+                properties:
+                  paths:
+                    type: array
+                    minItems: 1
+                    items:
+                      type: string
+                  size_limit_megabytes:
+                    type: number
+              - description: >
+                  "v2" cache syntax.
+                type: object
+                additionalProperties: false
+                required:
+                  - paths
+                  - version
+                properties:
+                  paths:
+                    type: array
+                    minItems: 1
+                    items:
+                      type: string
+                  version:
+                    type: number
+                  key:
+                    description: >
+                      By default, each script step gets its own cache, indexed by a "cache key" that is the step's name.
+                      To share the same cache across multiple script steps (of the same pipeline), specify the same
+                      cache key for all those steps.
+                    type: string
+                    minLength: 1
+                  pull_policy:
+                    description: >
+                      A given cache (with its cache key) has as many variants as its corresponding Git repository has
+                      branches.
+                      The pull_policy defines which branch variant is mounted when the step is run.
+                      The default, SOURCE, corresponds to the branch of the pull request (CDP_SOURCE_BRANCH), or the
+                      branch of the push for "push" pipelines.
+                      DEFAULT_BRANCH corresponds to the repository's "default branch", which is often the protected
+                      baseline (e.g. "master").
+                    enum:
+                      - SOURCE
+                      - DEFAULT_BRANCH
+                    default: SOURCE
+      - description: Schema for steps of type "automated_traffic"
+        required:
+        - target
+        - stackset
+        - stack_version
+        - desired_duration
+        properties:
+          type: { enum: [automated_traffic]}
+          desc:
+            description: Human-readable description of a process step
+            type: string
+          target:
+            description: |
+              ID or alias of the target cluster (according to the Cluster Registry),
+              where the StackSet resource is residing.
+            type: string
+          namespace:
+            description: Namespace where StackSet resource is residing (if omitted, assumed "default").
+            type: string
+          stackset:
+            description: Name of StackSet resource to switch traffic on.
+            type: string
+          stack_version:
+            description: Version of Stack in the specified StackSet that is to receive the specified traffic.
+            type: string
+          desired_duration:
+            description: How long the traffic switch should take.
+            type: string
+          metrics:
+            description: Metrics affecting switch success.
+            type: array
+            items:
+              type: object
+      - description: Schema for steps of type "traffic"
+        required:
+        - target
+        - stackset
+        - stack_version
+        oneOf:
+          - required:
+              - automated_switch
+          - required:
+              - target_percentage
+        properties:
+          type: { enum: [traffic]}
+          desc:
+            description: Human-readable description of a process step
+            type: string
+          target:
+            description: |
+              ID or alias of the target cluster (according to the Cluster Registry),
+              where the StackSet resource is residing.
+            type: string
+          namespace:
+            description: Namespace where StackSet resource is residing (if omitted, assumed "default").
+            type: string
+          stackset:
+            description: Name of StackSet resource to switch traffic on.
+            type: string
+          stack_version:
+            description: Version of Stack in the specified StackSet that is to receive the specified traffic.
+            type: string
+          target_percentage:
+            description: Amount of traffic to give the specified Stack.
+            type: number
+          automated_switch:
+            description: Spec for automated traffic switch.
+            type: object
+            properties:
+              engine:
+                description: An image of the automated traffic switch engine provided by the user.
+                type: string
+      - description: Schema for steps of type "gradual_traffic"
+        required:
+        - target
+        - desired_duration
+        - gradual_label
+        - port
+        - hosts
+        properties:
+          type: { enum: [gradual_traffic] }
+          desc:
+            description: Human-readable description of a process step
+            type: string
+          target:
+            description: |
+              ID or alias of the target cluster (according to the Cluster Registry),
+              where the deployment resource is residing.
+            type: string
+          namespace:
+            description: Namespace where the deployment resource is residing (if omitted, assumed "default").
+            type: string
+          desired_duration:
+            description: How long the traffic switch should take.
+            type: string
+          gradual_label:
+            description: the value of the label "gradual.zalando.org/id" identifying the deployment
+            type: string
+          port:
+            description: port that the exposed application listens on
+            type: number
+          hosts:
+            description: list of hosts that the deployment will be served on; minimum 1 item
+            type: array
+            minItems: 1
+            items:
+              type: string
+          metrics:
+            description: Type of strategy used for metrics assessment defining the success of the gradual deployment
+            type: string
+            enum:
+            - none
+            - skipper-success-rate-99
+            - lightstep-success-rate-99
+            - lightstep-golden-signals
+          threshold:
+            description: max number of failed checks before rollback
+            type: number
+          generate_traffic:
+            type: array
+            description: Specifies jobs to generate HTTP traffic during the traffic switch.
+            items:
+              type: object
+              required:
+                - url
+              properties:
+                job_name:
+                  description: Identifier for the job, autogenerated if unspecified.
+                  type: string
+                  # https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names
+                  pattern: '^[A-Za-z0-9]([A-Za-z0-9.-]*[A-Za-z0-9])?$'  # DNS name format
+                url:
+                  description: >
+                    URL to which to send the HTTP requests generated by this job,
+                    once combined with 'path' (if any).
+                  type: string
+                  anyOf:
+                    - format: uri
+                    - pattern: '#{[^}]+}'  # contains an interpolated CDP variable (all bets are off)
+                path:
+                  description: >
+                    If specified, will be combined with the value of the 'url' field
+                    (following the process specified at https://tools.ietf.org/html/rfc3986#section-5.2,
+                    which for this use-case can generally be understood as "appending").
+                    Useful when multiple jobs share the same URL, represented by a YAML anchor.
+                  type: string
+                hey:
+                  description: >
+                    Arguments to the 'hey' command-line tool.
+                    Some default arguments are provided by CDP with a reasonable value,
+                    but can be superseded by user-provided arguments here.
+                    Do not specify the URL to target in this argument list, use the 'url' and 'path' fields instead.
+                  type: array
+                  items:
+                    type:
+                      - string
+                      - number
+                env:
+                  $ref: "#/definitions/KubernetesEnvVars"
+                application_label:
+                  description: >
+                    Value for the "application" label associated with the job and its pods.
+                    Only useful when the job relies on an OAuth2 token provided by a PlatformCredentialsSet;
+                    then this "application" label must match the PCS’ "spec.application" field.
+                  type: string
+          _custom_flagger_canary_fields__unstable:
+            type: object
+            description: >
+              Fields to be added or overridden (via a nested merge operation)
+              in the Canary resource managed by CDP.
+              The purpose of this field is to allow the use of Flagger features
+              not yet available otherwise in the gradual_traffic step.
+              It is not designed for public use and may be removed in the future
+              without notice.
+              If you need to use a Flagger feature that is not exposed by the gradual_traffic step,
+              please consider opening a feature request for CDP instead of using this field.
+      - description: Schema for steps of type "process"
+        required:
+        - target
+        - process
+        oneOf:
+        - description: Not datacenter process
+          properties:
+            process: { enum: [microservice_standard_deployment, microservice_standard_test] }
+        - description: Datacenter process
+          properties:
+            process: { enum: [datacenter_standard_deployment] }
+          required: [namespace]
+        properties:
+          type: { enum: [process]}
+          debug_mode:
+            description: Whether failed deployment should be cleaned up right away or with a delay
+            type: boolean
+          namespace:
+            description: Namespace in a data center cluster
+            type: string
+          target:
+            description: |
+              ID or alias of the target cluster (according to the Cluster Registry),
+              where the deployment should take place.
+            type: string
+          process:
+            description: ID of the process to use for this deployment
+            type: string
+            pattern: '^[a-z][a-z0-9_]*$'
+          config:
+            description: |
+              Custom configuration for process tasks (activities). Child properties should correspond
+              to the actual tasks defined in the process.
+            type: object
+            additionalProperties: false
+            patternProperties:
+              # Process steps can be named using lowercase letters, digits and underscore
+              '^[a-z][a-z0-9_]*$':
+                description: |
+                  Each process task is executed as a Kubernetes pod. There are default pod manifests provided by CDP,
+                  but users can provide their ContainerSpec or PodSpec here.
+                  We don't declare the content, because it's a ContainerSpec or PodSpec of Kubernetes, not owned by us
+                  In case this ContainerSpec or PodSpec is invalid from Kubernetes point of view, it will fail when
+                  the process gets to execute this task.
+                type: object
+                oneOf:
+                - description: If it does not contain "spec", we consider it ContainerSpec
+                  type: object
+                  not: { required: [spec]}
+                  properties:
+                    env:
+                      oneOf:
+                      - { $ref: "#/definitions/EnvVars" }
+                      - { $ref: "#/definitions/KubernetesEnvVars" }
+                - description: If it has "spec", we consider it PodSpec
+                  type: object
+                  required: [spec]
+  notifications:
+    oneOf:
+    - description: Notification configuration for pipeline events
+      type: object
+      properties:
+        hipchat:
+          description: Notifications to HipChat
+          type: object
+          required:
+          - rooms
+          properties:
+            rooms:
+              description: List of rooms where to send notifications to
+              type:
+                - array
+                - string
+              items:
+                description: Room name (not ID)
+                type: string
+    - description: New notification configuration for pipeline events
+      type: array
+      minItems: 1
+      items:
+        type: object
+        required:
+        - channel
+        properties:
+          channel:
+            description: Type of the notification channel
+            type: string
+            enum:
+            - hipchat
+            - google_chat
+            - email
+        oneOf:
+        - required:
+          - rooms
+          properties:
+            channel: {enum: [hipchat, google_chat]}
+            rooms:
+              type: array
+              items:
+                type: string
+            conditions:
+              type: array
+            config:
+              type: object
+              properties:
+                emoji_pack:
+                  type: string
+                custom_emojis:
+                  type: object
+                  additionalProperties: false
+                  patternProperties:
+                    '[A-Z_]+$':
+                      type: string
+        - required:
+          - emails
+          properties:
+            channel: {enum: [email]}
+            emails:
+              type:
+              - array
+              - string
+              items:
+                type: string
+            conditions:
+              type: array
+definitions:
+  ArtifactMetadata:
+    description: Arbitrary metadata map for uploaded artifacts
+    type: object
+    minItems: 1
+    patternProperties:
+      '^.+$':
+        type: string
+    additionalProperties: false
+  ArtifactAcl:
+    description: AWS S3 simple authorization switches (Canned ACLs) for uploaded artifacts
+    type: string
+    enum:
+    - private
+    - public-read
+    - public-read-write
+    - aws-exec-read
+    - authenticated-read
+    - bucket-owner-read
+    - bucket-owner-full-control
+    - log-delivery-write
+  ArtifactGrants:
+    description: AWS S3 authorization switches (more granular than Canned ACLs) for uploaded artifacts
+    type: object
+    properties:
+      full:
+        type: string
+      read:
+        type: string
+      readacl:
+        type: string
+      writeacl:
+        type: string
+    additionalProperties: false
+  ArtifactHeaders:
+    description: AWS S3 HTTP headers for uploaded artifacts
+    type: object
+    properties:
+      cache_control:
+        type: string
+      content_disposition:
+        type: string
+      content_encoding:
+        type: string
+      content_language:
+        type: string
+      content_length:
+        type: number
+      content_md5:
+        type: string
+      content_type:
+        type: string
+      expires:
+        type: string
+        format: date-time
+    additionalProperties: false
+  DeploySource:
+    description: A deployment manifest specification
+    type: object
+    properties:
+      artifact:
+        type: string
+        description: >
+          Name of the artifact to be deployed. This name should match the name of an artifact
+          produced by a previous script step in the pipeline.
+      dir:
+        type: string
+        description: >
+          Path to a directory containing all deployment manifests (as YAML or JSON files) to be applied
+          in the `target` cluster.
+
+          Supports both Kubernetes and CloudFormation manifests. With CDK and cdk8s support planned.
+
+          The path is relative to the root of the pipeline’s git repository.
+          If the provided path is absolute (i.e. starts with "/"), its root ("/") will be identified
+          with the repository’s root, so it will be used as a relative path.
+
+          Note that, contrary to `DEPLOYMENT_PATH` in steps of type "process", no "apply" directory is implicitly
+          appended to the specified path.
+          If your manifests are located in `$ROOT/deploy/apply` (where `$ROOT` is the repository’s root), then
+          your `dir` value should be `deploy/apply`.
+      template_vars:
+        type: object
+        default: {}
+        description: >
+          A key-value mapping that lists all template arguments that can be used in the manifests to be deployed,
+          in addition to CDP’s [pipeline variables](https://cloud.docs.zalando.net/concepts/pipelines/#pipeline-variables).
+
+          Manifests to be deployed by this step will first be processed by the
+          [Mustache](http://mustache.github.io/mustache.5.html) templating system, which may replace template
+          parameters specified in these manifests with values provided in this field.
+
+          Contrary to the `env` field of "process" steps, this field doesn’t treat `DEPLOYMENT_PATH` as a special
+          key. The path to the directory containing this step’s manifests is specified via the `dir` field.
+
+          Although Mustache values can be anything, this field currently only accepts **string** values.
+
+          Providing here a value for a key already defined by CDP (a pipeline variable) will overwrite the value
+          for that key for manifest templating.
+      default_namespace:
+        type: string
+        description: >
+          Namespace that will be used by default when creating Kubernetes objects. When both `metadata.namespace` in
+          manifests and this field are used, the execution associated with this source will fail if the values are
+          different.
+      runner:
+        type: string
+        enum:
+          - mustache
+          - zflow
+          - opa-policy
+        default: mustache
+        description: >
+          A field defining the runner with which the source is being generated.
+          This field is optional and only mandatory when deploying zflow generated stack resources.
+      entry_point:
+        type: string
+        description: >
+          The relative path to the entry_point script inside dir.
+          When deploying zflow generated stack resources, this field is mandatory. It is the python script containing the zflow.builder.StackBuilder.generate() command.
+      runner_version:
+        type: string
+        default: "latest"
+        description: >
+          Optional field to define a runner version.
+          When deploying zflow generated stack resources, this is the zflow version with which the stack resources are generated.
+          This field is considered optional and will default to the latest released version.
+  EnvVars:
+    type: object
+    # Environment variables are usually string, but can be any atomic value (will be converted to string)
+    additionalProperties: false
+    patternProperties:
+      '^[A-Za-z_][A-Za-z0-9_]*$':
+        anyOf:
+          - type: ['null', string, number, boolean]
+          - type: object  # defined in https://github.bus.zalan.do/automata/issues/issues/2313
+            properties:
+              # Value constrains were taken from
+              # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_CreateSecret.html
+              secret_id:
+                type: string
+                minLength: 1
+                maxLength: 512
+              secret_version:
+                type: string
+                minLength: 32
+                maxLength: 64
+              value_in_pull_requests:
+                type: ['null', string, number, boolean]
+              available_in_pull_requests:
+                type: boolean
+  KubernetesEnvVars:
+    type: array
+    items:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          pattern: '^[A-Za-z_][A-Za-z0-9_]*$'
+        value:
+          # Environment variables are usually string, but can be any atomic value (will be converted to string)
+          type: ['null', string, number, boolean]

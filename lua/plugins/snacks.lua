@@ -11,14 +11,14 @@ return {
             words = { enabled = true },
             dashboard = {
                 enabled = true,
-                --                 preset = {
-                --                     header = [[⠀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀
-                -- ⠀⣴⣿⣿⣿⣶⣦⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-                -- ⢠⣿⣿⣿⣿⣿⣿⣿⣿⣧⣄⠀⠀⠀⠘⠛⠛⢛⣿⡇⠀⠚⠛⠛⠛⣿⡆⠀⣿⠀⠀⠛⠛⠛⠛⣿⠀⢠⡞⠛⠛⠛⣷⠀⢠⡾⠛⠛⠛⣿⡇⢠⡞⠛⠛⠻⣶⡄⠀⠀
-                -- ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠆⠀⠀⠀⠀⣠⠟⠋⠀⠀⣤⠶⠒⠒⣿⡇⠀⣿⠀⠀⣤⠶⠒⠒⣿⠀⢸⡇⠀⠀⠀⣿⠀⢸⡇⠀⠀⠀⣿⡇⢸⡇⠀⠀⠀⣿⡇⠀
-                -- ⠘⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⠀⠀⠀⢠⣾⣛⣀⣀⡀⠀⣯⣀⣀⣀⣿⡇⠀⣿⣀⠀⣿⣀⣀⣀⣿⠀⢸⡇⠀⠀⠀⣿⠀⠘⣧⣀⣀⣀⣿⡇⠘⣧⣀⣀⣠⣿⠃⠀
-                -- ⠀⠻⣿⣿⣿⠿⠛⠋⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠉⠁⠀⠈⠉⠛⠉⠉⠀⠀⠉⠉⠀⠉⠉⠛⠉⠉⠀⠈⠁⠀⠀⠀⠉⠀⠀⠈⠉⠛⠉⠉⠀⠀⠈⠉⠛⠉⠀⠀⠀⠀⠀]],
-                --                 },
+                preset = {
+                    header = [[ ⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀
+⠀⣴⣿⣿⣿⣶⣦⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢠⣿⣿⣿⣿⣿⣿⣿⣿⣧⣄⠀⠀⠀⠘⠛⠛⢛⣿⡇⠀⠚⠛⠛⠛⣿⡆⠀⣿⠀⠀⠛⠛⠛⠛⣿⠀⢠⡞⠛⠛⠛⣷⠀⢠⡾⠛⠛⠛⣿⡇⢠⡞⠛⠛⠻⣶⡄⠀⠀
+⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠆⠀⠀⠀⠀⣠⠟⠋⠀⠀⣤⠶⠒⠒⣿⡇⠀⣿⠀⠀⣤⠶⠒⠒⣿⠀⢸⡇⠀⠀⠀⣿⠀⢸⡇⠀⠀⠀⣿⡇⢸⡇⠀⠀⠀⣿⡇⠀
+⠘⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⠀⠀⠀⢠⣾⣛⣀⣀⡀⠀⣯⣀⣀⣀⣿⡇⠀⣿⣀⠀⣿⣀⣀⣀⣿⠀⢸⡇⠀⠀⠀⣿⠀⠘⣧⣀⣀⣀⣿⡇⠘⣧⣀⣀⣠⣿⠃⠀
+⠀⠻⣿⣿⣿⠿⠛⠋⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠉⠁⠀⠈⠉⠛⠉⠉⠀⠀⠉⠉⠀⠉⠉⠛⠉⠉⠀⠈⠁⠀⠀⠀⠉⠀⠀⠈⠉⠛⠉⠉⠀⠀⠈⠉⠛⠉⠀⠀⠀⠀⠀]],
+                },
                 sections = {
                     { section = "header" },
                     --{ section = "keys",    gap = 1 },
@@ -36,28 +36,38 @@ return {
                     { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
                     -- { section = "keys",    pane = 2 },
                     { section = "startup", padding = 1 },
-
                     -- {
                     --     pane = 2,
                     --     icon = " ",
                     --     title = "Open PRs",
-                    --     cmd =
-                    --     "GH_PAGER= gh pr list --repo github.bus.zalan.do/base-infrastructure/aws-base-infrastructure",
+                    --     cmd = "gh pr list --repo github.bus.zalan.do/base-infrastructure/aws-base-infrastructure",
                     --     action = function()
                     --         vim.fn.jobstart("gh pr list --web", { detach = true })
                     --     end,
                     --     height = 7,
+                    --     section = "terminal",
                     -- },
                     -- {
                     --     pane = 2,
                     --     icon = " ",
                     --     title = "Open PRs",
-                    --     cmd =
-                    --     "GH_PAGER= gh pr list --repo github.bus.zalan.do/base-infrastructure/aws-network-infrastructure",
+                    --     cmd = "gh pr list --repo github.bus.zalan.do/base-infrastructure/aws-network-infrastructure",
                     --     action = function()
                     --         vim.fn.jobstart("gh pr list --web", { detach = true })
                     --     end,
                     --     height = 7,
+                    --     section = "terminal",
+                    -- },
+                    -- {
+                    --     pane = 2,
+                    --     icon = " ",
+                    --     title = "Git Status",
+                    --     section = "terminal",
+                    --     cmd = "git status --short --branch --renames",
+                    --     height = 5,
+                    --     padding = 1,
+                    --     ttl = 5 * 60,
+                    --     indent = 3,
                     -- },
                 },
             },

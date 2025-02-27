@@ -1,4 +1,3 @@
-local vim = _G.vim
 -- Set highlight on search
 vim.o.hlsearch = false
 
