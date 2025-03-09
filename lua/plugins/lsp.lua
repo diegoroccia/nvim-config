@@ -18,6 +18,8 @@ return {
             vim.lsp.enable("ruff_lsp")
             vim.lsp.enable("tsserver")
             vim.lsp.enable("yamlls")
+            vim.lsp.enable("cue")
+            vim.lsp.enable("kcl")
 
             vim.api.nvim_create_autocmd('LspAttach', {
                 callback = function(args)

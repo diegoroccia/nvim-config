@@ -1,8 +1,11 @@
 local M = {
     cmd = { "yaml-language-server", "--stdio" },
-    filetypes = { "yaml", "yaml.cloudformation" },
+    filetypes = { "yaml", "yaml.cloudformation", "yaml.cdp" },
     settings = {
         yaml = {
+            schemaStore = {
+                enable = true,
+            },
             schemas = {
                 ["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.31.2/all.json"] =
                 "/*.k8s.yaml",
@@ -11,7 +14,6 @@ local M = {
             validate = true,
             completion = true,
             hover = true,
-
         }
     }
 }

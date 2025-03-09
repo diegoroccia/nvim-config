@@ -47,3 +47,10 @@ vim.o.termguicolors = true
 vim.o.scrolloff = 4
 
 vim.o.conceallevel = 2
+
+
+vim.filetype.add({
+    filename = {
+        ['delivery.yaml'] = "yaml.cdp"
+    }
+})

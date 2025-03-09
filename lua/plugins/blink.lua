@@ -36,6 +36,9 @@ local M = {
         -- elsewhere in your config, without redefining it, due to `opts_extend`
         sources = {
             default = { 'lsp', 'avante', 'path', 'snippets', 'buffer' },
+            per_filetype = {
+                ['yaml.cdp'] = { 'lsp' }
+            },
             providers = {
                 avante = {
                     module = 'blink-cmp-avante',
