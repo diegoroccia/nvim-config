@@ -1,4 +1,4 @@
 return {
-    "lervag/wiki.vim",
+    { "lervag/wiki.vim", enabled = false }
 
 }
