@@ -2,7 +2,9 @@ return {
     {
         "nvim-lualine/lualine.nvim",
         enable = false,
-        dependencies = { "nvim-tree/nvim-web-devicons", 'arkav/lualine-lsp-progress' },
+        dependencies = { "nvim-tree/nvim-web-devicons",
+            -- 'arkav/lualine-lsp-progress'
+        },
         opts = {
             options = {
                 theme = "catppuccin",
@@ -24,13 +26,10 @@ return {
                 lualine_c = { "filename" },
                 lualine_x = { "location" },
                 lualine_y = {},
-                lualine_z = {},
             },
             sections = {
                 lualine_x = {
                     "trouble",
-                    "fileformat",
-                    "filetype",
                     function()
                         if require("checkupdate").update_available then
                             return "🚀"
@@ -43,6 +42,10 @@ return {
                         cond = require("lazy.status").has_updates,
                         color = { fg = "#ff9e64" },
                     },
+                },
+                lualine_y = {
+                    -- "fileformat",
+                    "filetype",
                 },
                 lualine_c = {
                     "lsp_progress",

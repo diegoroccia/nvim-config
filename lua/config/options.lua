@@ -48,6 +48,8 @@ vim.o.scrolloff = 4
 
 vim.o.conceallevel = 2
 
+vim.o.foldlevel = 4
+
 
 vim.filetype.add({
     filename = {
