@@ -49,6 +49,10 @@ vim.o.scrolloff = 4
 vim.o.conceallevel = 2
 
 vim.o.foldlevel = 4
+vim.o.autochdir = true
+
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "nvim_treesitter#foldexpr()"
 
 
 vim.filetype.add({

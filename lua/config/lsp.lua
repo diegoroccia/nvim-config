@@ -28,6 +28,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
             vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
         end
 
+        if client:supports_method('textDocument/foldingRange') then
+            vim.o.foldexpr = "v:lua.vim.lsp.foldexpr()"
+        end
+
         if client:supports_method('textDocument/formatting') then
             -- Format the current buffer on save
             vim.api.nvim_create_autocmd('BufWritePre', {

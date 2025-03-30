@@ -7,4 +7,5 @@ return {
         },
         opts = {}
     },
+    { "stevearc/conform.nvim", }
 }
