@@ -1,3 +1,3 @@
 return {
-    "kcl-lang/kcl.nvim",
+    { "kcl-lang/kcl.nvim", ft = "kcl" }
 }

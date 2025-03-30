@@ -3,6 +3,7 @@ local M = {
     dependencies = {
         'Kaiser-Yang/blink-cmp-avante',
         'rafamadriz/friendly-snippets',
+        "giuxtaposition/blink-cmp-copilot",
     },
     event = "InsertEnter",
 
@@ -18,7 +19,7 @@ local M = {
                 auto_show_delay_ms = 500,
             },
             ghost_text = {
-                enabled = true
+                enabled = false
             }
         },
         -- 'default' for mappings similar to built-in completion
@@ -35,16 +36,24 @@ local M = {
         -- Default list of enabled providers defined so that you can extend it
         -- elsewhere in your config, without redefining it, due to `opts_extend`
         sources = {
-            default = { 'lsp', 'avante', 'path', 'snippets', 'buffer' },
+            default = { 'lsp', 'copilot', 'path', 'snippets', 'buffer' },
             per_filetype = {
                 ['yaml.cdp'] = { 'lsp' }
             },
             providers = {
-                avante = {
-                    module = 'blink-cmp-avante',
-                    name = 'avante',
-                }
-            }
+                copilot = {
+                    module = 'blink-cmp-copilot',
+                    name = 'copilot',
+                    async = true,
+                    score_offset = 100,
+                },
+                buffer = {
+                    min_keyword_length = 5,
+                },
+                lsp = {
+                    fallbacks = {},
+                },
+            },
         },
     },
     opts_extend = { "sources.default" },

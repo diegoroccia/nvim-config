@@ -4,11 +4,20 @@ return {
         priority = 1000,
         lazy = false,
         opts = {
+            zen = { enabled = true },
             bigfile = { enabled = true },
             notifier = { enabled = true },
             quickfile = { enabled = true },
             statuscolumn = { enabled = true },
             words = { enabled = true },
+            indent = {
+                enabled = true,
+                only_scope = false, -- only show indent guides of the scope
+                only_current = false,
+                chunk = {
+                    enabled = true,
+                },
+            },
             dashboard = {
                 enabled = true,
                 preset = {
@@ -71,6 +80,11 @@ return {
                     -- },
                 },
             },
+            styles = {
+                notification = {
+                    wo = { wrap = true } -- Wrap notifications
+                }
+            }
         },
     },
 }

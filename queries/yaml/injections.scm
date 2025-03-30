@@ -1,3 +1,5 @@
+; extend
+
 (
   (block_mapping_pair
     key: (flow_node) @_kind_key (#eq? @_kind_key "kind")
