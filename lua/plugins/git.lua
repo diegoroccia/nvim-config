@@ -21,6 +21,13 @@ local M = {
                 end,
                 desc = "commit"
             },
+            {
+                "<leader>gp",
+                function()
+                    require('neogit').open({ "push", kind = "vsplit" })
+                end,
+                desc = "commit"
+            },
         },
         opts = {
             kind = "vsplit",
