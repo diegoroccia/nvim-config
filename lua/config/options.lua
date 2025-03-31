@@ -32,7 +32,7 @@ vim.o.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
 
--- vim.o.completeopt = "menuone,noselect"
+vim.o.completeopt = "menuone,noselect"
 
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
@@ -54,10 +54,3 @@ vim.o.autochdir = true
 
 vim.o.foldmethod = "expr"
 vim.o.foldexpr = "nvim_treesitter#foldexpr()"
-
-
-vim.filetype.add({
-    filename = {
-        ['delivery.yaml'] = "yaml.cdp"
-    }
-})

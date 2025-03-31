@@ -13,7 +13,7 @@ vim.lsp.enable({
     "cue",
     "kcl",
     "markdown",
-    "rego"
+    "regal"
 })
 
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -48,8 +48,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
             })
         end
 
-        if client.server_capabilities.foldingRangeProvider and client.name ~= "rego" then
-            vim.notify("enabled LSP folding")
+        if client.server_capabilities.foldingRangeProvider and client.name ~= "regal" then
             local win = vim.api.nvim_get_current_win()
             vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
         end
