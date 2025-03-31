@@ -9,7 +9,7 @@ local M = {
     -- current buffer that contains either a ".luarc.json" or a
     -- ".luarc.jsonc" file. Files that share a root directory will reuse
     -- the connection to the same LSP server.
-    root_markers = { 'mkdocs.yml', '.git' },
+    root_markers = { 'mkdocs.yml' },
 
     -- Specific settings to send to the server. The schema for this is
     -- defined by the server. For example the schema for lua-language-server

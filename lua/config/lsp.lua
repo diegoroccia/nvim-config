@@ -1,36 +1,40 @@
-vim.lsp.enable("luals")
-vim.lsp.enable("gopls")
-vim.lsp.enable("pyright")
-vim.lsp.enable("ruff_lsp")
-vim.lsp.enable("tsserver")
-vim.lsp.enable("yamlls")
-vim.lsp.enable("json")
-vim.lsp.enable("cue")
-vim.lsp.enable("kcl")
-vim.lsp.enable("markdown")
-vim.lsp.enable("rego")
+vim.lsp.config('*', {
+    root_markers = { '.git' },
+})
 
-local map = function(keys, func, desc)
-    vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
-end
+vim.lsp.enable({
+    "luals",
+    "gopls",
+    "pyright",
+    "ruff_lsp",
+    "tsserver",
+    "yamlls",
+    "json",
+    "cue",
+    "kcl",
+    "markdown",
+    "rego"
+})
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
         vim.bo[args.buf].formatexpr = nil
         vim.bo[args.buf].omnifunc = nil
 
+
         local bufnr = args.buf
         local client = vim.lsp.get_client_by_id(args.data.client_id)
 
-        if client:supports_method('textDocument/completion') then
-            -- Enable auto-completion
-            vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
-            vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+        assert(client ~= nil, "LSP client not found")
+
+        local map = function(keys, func, desc)
+            vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
         end
 
-        if client:supports_method('textDocument/foldingRange') then
-            vim.o.foldexpr = "v:lua.vim.lsp.foldexpr()"
-        end
+        -- if client:supports_method('textDocument/completion') then
+        --     -- Enable auto-completion
+        --     vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+        -- end
 
         if client:supports_method('textDocument/formatting') then
             -- Format the current buffer on save
@@ -42,6 +46,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
                     end
                 end,
             })
+        end
+
+        if client.server_capabilities.foldingRangeProvider and client.name ~= "rego" then
+            vim.notify("enabled LSP folding")
+            local win = vim.api.nvim_get_current_win()
+            vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
         end
 
         if client.server_capabilities.definitionProvider then

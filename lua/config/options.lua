@@ -32,7 +32,7 @@ vim.o.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
 
-vim.o.completeopt = "menuone,noselect"
+-- vim.o.completeopt = "menuone,noselect"
 
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
@@ -49,6 +49,7 @@ vim.o.scrolloff = 4
 vim.o.conceallevel = 2
 
 vim.o.foldlevel = 4
+vim.o.foldminlines = 5
 vim.o.autochdir = true
 
 vim.o.foldmethod = "expr"
