@@ -9,7 +9,6 @@ local M = {
 
     version = '*',
     ---@module 'blink.cmp'
-    ---@type blink.cmp.Config
     opts = {
         signature = { enabled = true },
 

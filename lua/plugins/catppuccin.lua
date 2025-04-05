@@ -8,9 +8,9 @@ return {
             require("catppuccin").setup({
                 background = { -- :h background
                     light = "latte",
-                    dark = "macchiato",
+                    dark = "mocha",
                 },
-                transparent_background = true,
+                transparent_background = false,
                 term_colors = true,
                 dim_inactive = {
                     enabled = true,
@@ -18,21 +18,21 @@ return {
                 integrations = {
                     alpha = true,
                     cmp = true,
-                    dashboard = true,
                     gitsigns = true,
                     lsp_saga = true,
                     lsp_trouble = true,
                     markdown = true,
                     mason = true,
                     mini = true,
-                    nvimtree = true,
                     noice = true,
                     notify = true,
-                    telescope = true,
                     treesitter = true,
                     treesitter_context = true,
-                    vimwiki = true,
                     which_key = true,
+                    snacks = {
+                        enabled = true,
+                        indent_scope_color = "mocha", -- catppuccin color (eg. `lavender`) Default: text
+                    },
                     indent_blankline = {
                         enabled = true,
                         colored_indent_levels = true,

@@ -1,12 +1,12 @@
 local M = {
     {
         "lewis6991/gitsigns.nvim",
-        event = "VeryLazy",
+        event = "BufReadPre",
         opts = {}
     },
     {
         "NeogitOrg/neogit",
-        event = "VeryLazy",
+        -- event = "VeryLazy",
         dependencies = {
             "nvim-lua/plenary.nvim",  -- required
             "sindrets/diffview.nvim", -- optional - Diff integration

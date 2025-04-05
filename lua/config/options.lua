@@ -1,56 +1,63 @@
 -- Set highlight on search
-vim.o.hlsearch = false
+vim.opt.hlsearch = false
 
--- Make line numbers default
-vim.wo.number = true
-vim.wo.rnu = true
+vim.opt.relativenumber = true
+vim.opt.number = true
 
 -- Enable mouse mode
-vim.o.mouse = "a"
+vim.opt.mouse = "a"
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.o.clipboard = "unnamedplus"
+vim.opt.clipboard = "unnamedplus"
 
 -- Enable break indent
-vim.o.breakindent = true
+vim.opt.breakindent = true
 
 -- Save undo history
-vim.o.undofile = true
+vim.opt.undofile = true
 
 -- Case-insensitive searching UNLESS \C or capital in search
-vim.o.ignorecase = true
-vim.o.smartcase = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
--- Keep signcolumn on by default
-vim.wo.signcolumn = "yes"
+vim.opt.signcolumn = "yes"
 
 -- Decrease update time
-vim.o.updatetime = 250
-vim.o.timeoutlen = 300
+vim.opt.updatetime = 250
+vim.opt.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
 
-vim.o.completeopt = "menuone,noselect"
+vim.opt.completeopt = "menuone,noselect"
 
-vim.o.tabstop = 4
-vim.o.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
-vim.o.colorcolumn = "80,132"
+vim.opt.colorcolumn = "80,132"
 
-vim.opt.listchars:append({ trail = "·", eol = "↲", nbsp = "␣", extends = "…" })
 vim.opt.list = true
 
-vim.o.termguicolors = true
-vim.o.scrolloff = 4
+vim.opt.termguicolors = true
+vim.opt.scrolloff = 4
 
-vim.o.conceallevel = 2
+vim.opt.conceallevel = 2
 
-vim.o.foldlevel = 4
-vim.o.foldminlines = 5
-vim.o.autochdir = true
+vim.opt.autochdir = true
 
-vim.o.foldmethod = "expr"
-vim.o.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldlevel = 4
+vim.opt.foldlevelstart = 6
+vim.opt.foldmethod = "expr"
+vim.opt.foldminlines = 6
+
+local space = "·"
+vim.opt.listchars:append {
+    tab = "│ ",
+    multispace = space,
+    lead = space,
+    trail = space,
+    nbsp = space
+}
