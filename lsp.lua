@@ -27,6 +27,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         assert(client ~= nil, "LSP client not found")
 
+        local map = function(keys, func, desc)
+            vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
+        end
+
         -- if client:supports_method('textDocument/completion') then
         --     -- Enable auto-completion
         --     vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
@@ -85,6 +89,5 @@ vim.api.nvim_create_autocmd('LspAttach', {
         map("K", vim.lsp.buf.hover, "Hover Documentation")
         map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
         map("<leader>=", vim.lsp.buf.format, "Format Buffer")
-        map("<leader>sd", Snacks.picker.diagnostics, "Diagnostics")
     end,
 })
