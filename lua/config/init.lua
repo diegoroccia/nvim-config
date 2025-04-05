@@ -1,0 +1,5 @@
+require('options')
+require('lazy')
+require('lsp')
+require('diagnostics')
+require('keymaps')

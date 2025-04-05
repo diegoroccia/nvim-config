@@ -85,6 +85,5 @@ vim.api.nvim_create_autocmd('LspAttach', {
         map("K", vim.lsp.buf.hover, "Hover Documentation")
         map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
         map("<leader>=", vim.lsp.buf.format, "Format Buffer")
-        map("<leader>sd", Snacks.picker.diagnostics, "Diagnostics")
     end,
 })

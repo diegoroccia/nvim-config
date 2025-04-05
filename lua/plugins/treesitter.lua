@@ -5,7 +5,9 @@ return {
         build = ":TSUpdate",
         opts = {
             ensure_installed = {
-                "cue", "python", "lua", "go", "yaml", "typescript", "javascript", "css", "markdown"
+                "python", "lua", "go", "typescript", "javascript", "css",
+                "cue", "kcl", "rego",
+                "markdown", "yaml",
             },
             highlight = {
                 enable = true,
