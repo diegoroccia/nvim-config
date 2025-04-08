@@ -1,6 +1,7 @@
 return {
     {
         "williamboman/mason.nvim",
+        event = "BufReadPre",
         dependencies = {
             "WhoIsSethDaniel/mason-tool-installer.nvim",
             {
@@ -24,5 +25,8 @@ return {
         },
         opts = {}
     },
-    { "stevearc/conform.nvim", }
+    {
+        "stevearc/conform.nvim",
+        event = "BufReadPre",
+    }
 }

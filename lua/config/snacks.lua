@@ -45,9 +45,22 @@ Diego Roccia - Team Linus - Zalando SE]],
             { icon = " ", key = "q", desc = "Quit", action = ":qa", padding = 1 },
 
             { icon = " ", title = "Recent Files", section = "recent_files", indent = 1, padding = 1, pane = 2 },
-            { icon = " ", title = "Projects", section = "projects", indent = 1, padding = 1, pane = 2 },
+            -- { icon = " ", title = "Projects", section = "projects", indent = 1, padding = 1, pane = 2 },
+            { pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1, pick = true, session = false },
+            -- {
+            --     pane = 2,
+            --     icon = " ",
+            --     title = "Projects",
+            --     section = "projects",
+            --     indent = 2,
+            --     padding = 1,
+            --     pick = false,
+            --     session = false,
+            --     action = function(dir)
+            --         Snacks.picker.files({ dir })
+            --     end
+            -- },
 
-            -- { section = "keys",    pane = 2 },
             { section = "startup", padding = 1, width = 33 },
         },
     },

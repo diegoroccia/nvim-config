@@ -1,3 +1,5 @@
+vim.opt.background = "dark"
+
 -- Set highlight on search
 vim.opt.hlsearch = false
 
