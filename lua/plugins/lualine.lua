@@ -5,6 +5,7 @@ return {
             "nvim-tree/nvim-web-devicons",
             -- 'arkav/lualine-lsp-progress'
         },
+        event = "BufReadPre",
         opts = {
             options = {
                 theme = "catppuccin",

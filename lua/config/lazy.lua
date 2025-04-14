@@ -29,4 +29,21 @@ require("lazy").setup({
     install = { colorscheme = { "catppuccin" } },
     -- automatically check for plugin updates
     checker = { enabled = false },
+    performance = {
+        rtp = {
+            -- paths = {
+            --   vim.fn.stdpath("data") .. "/lazy/blink-cmp-git",
+            -- },
+            disabled_plugins = {
+                "gzip",
+                "matchit",
+                -- "matchparen",
+                "netrwPlugin",
+                "tarPlugin",
+                "tohtml",
+                "tutor",
+                "zipPlugin",
+            },
+        },
+    },
 })

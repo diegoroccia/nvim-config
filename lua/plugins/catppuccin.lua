@@ -2,7 +2,6 @@ return {
     {
         "catppuccin/nvim",
         name = "catppuccin",
-        lazy = false,
         priority = 1000,
         config = function()
             require("catppuccin").setup({
@@ -10,22 +9,20 @@ return {
                     light = "latte",
                     dark = "mocha",
                 },
-                transparent_background = true,
-                term_colors = true,
+                transparent_background = false,
+                term_colors = false,
                 dim_inactive = {
                     enabled = false,
                 },
                 integrations = {
-                    alpha = true,
-                    cmp = true,
+                    blink_cmp = true,
                     gitsigns = true,
-                    lsp_saga = true,
                     lsp_trouble = true,
                     markdown = true,
                     mason = true,
-                    mini = true,
-                    noice = true,
-                    notify = true,
+                    mini = {
+                        enabled = true,
+                    },
                     treesitter = true,
                     treesitter_context = true,
                     which_key = true,

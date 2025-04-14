@@ -9,8 +9,8 @@ local M = {
     toggle = { enabled = true },
     indent = {
         enabled = true,
-        only_scope = false, -- only show indent guides of the scope
-        only_current = false,
+        only_scope = true, -- only show indent guides of the scope
+        only_current = true,
         chunk = {
             enabled = true,
         },
@@ -29,7 +29,9 @@ local M = {
 Diego Roccia - Team Linus - Zalando SE]],
         },
         sections = {
-            { section = "header" },
+            {
+                section = "header"
+            },
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
             {
                 icon = " ",
@@ -47,6 +49,7 @@ Diego Roccia - Team Linus - Zalando SE]],
             { icon = " ", title = "Recent Files", section = "recent_files", indent = 1, padding = 1, pane = 2 },
             -- { icon = " ", title = "Projects", section = "projects", indent = 1, padding = 1, pane = 2 },
             { pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1, pick = true, session = false },
+            { title = "Sessions", padding = 1 },
             -- {
             --     pane = 2,
             --     icon = " ",
@@ -67,7 +70,7 @@ Diego Roccia - Team Linus - Zalando SE]],
     styles = {
         notification = {
             wo = { wrap = true } -- Wrap notifications
-        }
+        },
     },
 }
 

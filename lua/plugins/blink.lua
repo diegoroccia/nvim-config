@@ -2,7 +2,6 @@ local M = {
     'saghen/blink.cmp',
     dependencies = {
         'Kaiser-Yang/blink-cmp-avante',
-        'rafamadriz/friendly-snippets',
         "giuxtaposition/blink-cmp-copilot",
     },
     event = "InsertEnter",
@@ -10,22 +9,47 @@ local M = {
     version = '*',
     ---@module 'blink.cmp'
     opts = {
-        signature = { enabled = true },
+        signature = {
+            enabled = false,
+            window = {
+                show_documentation = false
+            }
+        },
 
         completion = {
+            accept = {
+                auto_brackets = {
+                    enabled = true,
+                },
+            },
             documentation = {
-                auto_show = true,
+                auto_show = false,
                 auto_show_delay_ms = 500,
+                window = {
+                    border = "rounded",
+                    winblend = 0,
+                    scrollbar = true,
+                },
             },
             ghost_text = {
-                enabled = false
+                enabled = true,
+                show_with_menu = false
+            },
+            menu = {
+                border = "rounded",
+                winblend = 0,
+                scrollbar = true,
+                draw = {
+                    treesitter = { 'lsp' }
+                },
+                auto_show = true
             }
         },
         -- 'default' for mappings similar to built-in completion
         -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
         -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
         -- See the full "keymap" documentation for information on defining your own keymap.
-        keymap = { preset = 'default' },
+        keymap = { preset = 'enter' },
 
         appearance = {
             use_nvim_cmp_as_default = true,

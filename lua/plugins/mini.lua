@@ -2,6 +2,7 @@ return {
     {
         "echasnovski/mini.nvim",
         version = false,
+        event = "BufReadPre",
         config = function()
             -- require("mini.ai").setup()
             require("mini.basics").setup()
@@ -9,7 +10,7 @@ return {
             require("mini.surround").setup()
             require("mini.pick").setup()
             -- require("mini.cursorword").setup()
-            -- require("mini.sessions").setup()
+            require("mini.sessions").setup()
             -- require("mini.map").setup()
             -- require("mini.icons").setup()
             -- require("mini.statusline").setup()
