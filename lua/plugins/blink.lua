@@ -1,10 +1,9 @@
 local M = {
     'saghen/blink.cmp',
     dependencies = {
-        'Kaiser-Yang/blink-cmp-avante',
         "giuxtaposition/blink-cmp-copilot",
     },
-    event = "InsertEnter",
+    event = "BufReadPre",
 
     version = '*',
     ---@module 'blink.cmp'
