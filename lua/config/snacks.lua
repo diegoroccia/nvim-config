@@ -42,12 +42,20 @@ Diego Roccia - Team Linus - Zalando SE]],
                 end
             },
             { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
+            {
+                icon = " ",
+                key = "g",
+                desc = "GH projects",
+                action = function()
+                    local ghpicker = require("config.zalando").picker()
+                    Snacks.picker.pick(ghpicker)
+                end
+            },
 
             { icon = " ", key = "s", desc = "Restore Session", section = "session" },
             { icon = " ", key = "q", desc = "Quit", action = ":qa", padding = 1 },
 
             { icon = " ", title = "Recent Files", section = "recent_files", indent = 1, padding = 1, pane = 2 },
-            -- { icon = " ", title = "Projects", section = "projects", indent = 1, padding = 1, pane = 2 },
             { pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1, pick = true, session = false },
             { title = "Sessions", padding = 1 },
             -- {

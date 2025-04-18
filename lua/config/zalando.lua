@@ -11,8 +11,6 @@ local _run_command = function(command, cb_transform)
 
     local jobdef = command
 
-    local entries = {}
-
     jobdef.on_exit = function(job)
         local result = job:result()
         local ok, parsed = pcall(vim.json.decode, table.concat(result, ""))
@@ -21,23 +19,26 @@ local _run_command = function(command, cb_transform)
             return
         end
 
-        local items = {}
+        M.items_cache = {}
+
         for _, item in ipairs(parsed) do
-            table.insert(items, cb_transform(item))
+            table.insert(M.items_cache, cb_transform(item))
         end
-        entries = items
     end
 
-    Job:new(jobdef):sync()
-    return entries
+    Job:new(jobdef):start()
 end
 
 
 local get_repositories = function()
+    if M.items_cache then
+        return M.items_cache
+    end
+
     local entries = _run_command({
-        "gh", "repo", "list", M.opts.org,
-        "--topic", M.opts.topic, "--no-archived", "--json",
-        "name,nameWithOwner,description,repositoryTopics,updatedAt,url"
+        "gh", "repo", "list", "--no-archived", "--json",
+        "name,nameWithOwner,description,repositoryTopics,updatedAt,url",
+        M.opts.org, "--topic", M.opts.topic,
     }, function(repository)
         return {
             name = repository.name,
@@ -56,6 +57,7 @@ local get_repositories = function()
             }
         }
     end)
+    M.items_cache = entries
     return entries
 end
 
@@ -64,8 +66,16 @@ M.setup = function(user_opts)
         M.opts = vim.tbl_deep_extend("force", M.opts, user_opts)
     end
 
-    local basedir_expanded = vim.fn.expand(M.opts.basedir)
+    -- refresh the cache
+    _ = get_repositories()
 
+    vim.keymap.set("n", "<leader>gh", function()
+        Snacks.picker.pick(M.picker())
+    end, { desc = "Zalando Github Projects" })
+end
+
+M.picker = function()
+    local basedir_expanded = vim.fn.expand(M.opts.basedir)
     local zalandoGithubPicker = {
         finder = get_repositories,
         format = "text",
@@ -111,16 +121,13 @@ M.setup = function(user_opts)
                 keys = {
                     ["<c-b>"] = {
                         "browse",
-                        mode = { "n", "i" },
+                        mode = { "n", "v", "x", "s", "o", "i", "c", "t" },
                     },
                 }
             },
         }
     }
-
-    vim.keymap.set("n", "<leader>gh", function()
-        Snacks.picker.pick(zalandoGithubPicker)
-    end, { desc = "Zalando Github Projects" })
+    return zalandoGithubPicker
 end
 
 return M
