@@ -42,36 +42,43 @@ Diego Roccia - Team Linus - Zalando SE]],
                 end
             },
             { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
-            {
-                icon = " ",
-                key = "g",
-                desc = "GH projects",
-                action = function()
-                    local ghpicker = require("config.zalando").picker()
-                    Snacks.picker.pick(ghpicker)
-                end
-            },
 
-            { icon = " ", key = "s", desc = "Restore Session", section = "session" },
             { icon = " ", key = "q", desc = "Quit", action = ":qa", padding = 1 },
 
+            {
+                icon = " ",
+                key = "r",
+                desc = "Repositories",
+                action = function()
+                    Snacks.dashboard.pick(require("config.zalando").picker())
+                end,
+                pane = 1
+            },
             { icon = " ", title = "Recent Files", section = "recent_files", indent = 1, padding = 1, pane = 2 },
-            { pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1, pick = true, session = false },
-            { title = "Sessions", padding = 1 },
-            -- {
-            --     pane = 2,
-            --     icon = " ",
-            --     title = "Projects",
-            --     section = "projects",
-            --     indent = 2,
-            --     padding = 1,
-            --     pick = false,
-            --     session = false,
-            --     action = function(dir)
-            --         Snacks.picker.files({ dir })
-            --     end
-            -- },
-
+            {
+                pane = 2,
+                icon = " ",
+                title = "Open issues",
+                section = "terminal",
+                cmd =
+                "GH_PAGER='' gh search issues --owner zalando-build --state open --assignee @me --json repository,number,title --jq  '.[] | [ .repository.name, \"#\" + (.number|tostring), .title ]| @tsv'",
+                height = 5,
+                padding = 1,
+                ttl = 5 * 60,
+                indent = 3,
+            },
+            {
+                pane = 2,
+                icon = " ",
+                title = "Open PRs",
+                section = "terminal",
+                cmd =
+                "GH_PAGER='' gh search prs --owner zalando-build --state open --assignee @me --json repository,number,title --jq  '.[] | [ .repository.name, \"#\" + (.number|tostring), .title ]| @tsv'",
+                height = 5,
+                padding = 1,
+                ttl = 5 * 60,
+                indent = 3,
+            },
             { section = "startup", padding = 1, width = 33 },
         },
     },
