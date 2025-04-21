@@ -50,7 +50,7 @@ Diego Roccia - Team Linus - Zalando SE]],
                 key = "r",
                 desc = "Repositories",
                 action = function()
-                    Snacks.dashboard.pick(require("config.zalando").picker)
+                    Snacks.dashboard.pick(require("zalando.pickers").picker)
                 end,
                 pane = 1
             },
