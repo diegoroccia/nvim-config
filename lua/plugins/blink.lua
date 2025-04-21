@@ -2,6 +2,7 @@ local M = {
     'saghen/blink.cmp',
     dependencies = {
         "giuxtaposition/blink-cmp-copilot",
+        "rafamadriz/friendly-snippets"
     },
     event = "BufReadPre",
 
