@@ -1,8 +1,7 @@
 return {
     {
         "diego-roccia_zse/zalando.nvim",
-        -- url = "git@github-zse:diego-roccia_zse/zalando.nvim.git",
-        dir = "~/code/zalando-personal/zalando.nvim",
+        -- url = "https://github.com/diego-roccia_zse/zalando.nvim",
         config = {
             topic = "linus"
         },
