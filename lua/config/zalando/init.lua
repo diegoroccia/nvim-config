@@ -1,4 +1,4 @@
-local util = require("util")
+local util = require("config.zalando.util")
 
 local DEFAULT_SETTINGS = {
     basedir = "~/code",
