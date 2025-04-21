@@ -12,7 +12,7 @@ local M = {
         signature = {
             enabled = false,
             window = {
-                show_documentation = false
+                show_documentation = true
             }
         },
 
