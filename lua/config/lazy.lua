@@ -34,9 +34,12 @@ require("lazy").setup({
         path = "~/code/zalando-personal/",
         ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
         patterns = { "diego-roccia_zse" }, -- For example {"folke"}
-        fallback = false,                -- Fallback to git when local plugin doesn't exist
+        fallback = false,                  -- Fallback to git when local plugin doesn't exist
     },
     performance = {
+        cache = {
+            enabled = true
+        },
         rtp = {
             -- paths = {
             --   vim.fn.stdpath("data") .. "/lazy/blink-cmp-git",
