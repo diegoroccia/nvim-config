@@ -29,6 +29,13 @@ require("lazy").setup({
     install = { colorscheme = { "catppuccin" } },
     -- automatically check for plugin updates
     checker = { enabled = false },
+    dev = {
+        ---@type string | fun(plugin: LazyPlugin): string
+        path = "~/code/zalando-personal/",
+        ---@type string[] plugins that match these patterns will use your local versions instead of being fetched from GitHub
+        patterns = { "diego-roccia_zse" }, -- For example {"folke"}
+        fallback = false,                -- Fallback to git when local plugin doesn't exist
+    },
     performance = {
         rtp = {
             -- paths = {
