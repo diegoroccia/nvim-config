@@ -1,6 +1,6 @@
 return {
     {
         "diego-roccia_zse/zalando.nvim",
-        url = "https://github.com/diego-roccia_zse/zalando.nvim.git"
+        url = "git@github-zse:diego-roccia_zse/zalando.nvim.git"
     }
 }
