@@ -30,5 +30,6 @@
   "tree-sitter-templ": { "branch": "master", "commit": "7f7f06b3931ca00e8ddfbeab3fc08ad00d297fad" },
   "trouble.nvim": { "branch": "main", "commit": "85bedb7eb7fa331a2ccbecb9202d8abba64d37b3" },
   "which-key.nvim": { "branch": "main", "commit": "370ec46f710e058c9c1646273e6b225acf47cbed" },
-  "wiki.vim": { "branch": "master", "commit": "bb404d4c67ecb4af768d9fe15f235709722ff78d" }
+  "wiki.vim": { "branch": "master", "commit": "bb404d4c67ecb4af768d9fe15f235709722ff78d" },
+  "zalando.nvim": { "branch": "main", "commit": "cbf276e50d1e460d97ad4082dc6a6fdca4990692" }
 }
