@@ -69,140 +69,136 @@ M.setup = function(user_opts)
     end, { desc = "Zalando Github Projects" })
 end
 
-M.picker = function()
-    local zalandoGithubPicker = {
+M.picker = {
 
-        title = "Zalando Github Projects",
-        finder = M.finder,
-        prompt = "   ",
+    title = "Zalando Github Projects",
+    finder = M.finder,
+    prompt = "   ",
 
-        matcher = { sort_empty = true },
+    matcher = { sort_empty = true },
 
-        format = function(item, _)
-            local text = "   " .. item.text
-            if item.viewerHasStarred == true then
-                text = "⭐ " .. item.text
-            end
-            return {
-                { text, item.text_hl },
-            }
-        end,
+    format = function(item, _)
+        local text = "   " .. item.text
+        if item.viewerHasStarred == true then
+            text = "⭐ " .. item.text
+        end
+        return {
+            { text, item.text_hl },
+        }
+    end,
 
-        preview = function(ctx)
-            local item = ctx.item
+    preview = function(ctx)
+        local item = ctx.item
 
-            local tags = {}
-            for _, topic in ipairs(item.repositoryTopics) do
-                table.insert(tags, " " .. topic.name)
-            end
+        local tags = {}
+        for _, topic in ipairs(item.repositoryTopics) do
+            table.insert(tags, " " .. topic.name)
+        end
 
-            local lines = {
-                "**" .. item.owner.login .. "/" .. item.name .. "**",
-                "",
-                item.description,
-                "",
-                "**Stats:** " ..
-                table.concat({ "  " .. util.time_ago(item.updatedAt),
-                    "  " .. item.issues.totalCount,
-                    "  " .. item.pullRequests.totalCount,
-                    "  " .. item.stargazerCount }, " | "),
-                "",
-                "**Topics:** " .. table.concat(tags, " "),
-                "",
-                "[link to the repository](" .. item.url .. ")",
-                "",
-                "Press <C-b> to open in the browser",
-            }
+        local lines = {
+            "**" .. item.owner.login .. "/" .. item.name .. "**",
+            "",
+            item.description,
+            "",
+            "**Stats:** " ..
+            table.concat({ "  " .. util.time_ago(item.updatedAt),
+                "  " .. item.issues.totalCount,
+                "  " .. item.pullRequests.totalCount,
+                "  " .. item.stargazerCount }, " | "),
+            "",
+            "**Topics:** " .. table.concat(tags, " "),
+            "",
+            "[link to the repository](" .. item.url .. ")",
+            "",
+            "Press <C-b> to open in the browser",
+        }
 
-            ctx.preview:set_lines(lines)
-            ctx.preview:highlight({ ft = "markdown" })
-        end,
+        ctx.preview:set_lines(lines)
+        ctx.preview:highlight({ ft = "markdown" })
+    end,
 
-        confirm = function(picker, item)
-            picker:close()
-            local path = table.concat({ basedir_expanded, M.opts.org, M.opts.topic, item.name }, "/")
-            if vim.fn.isdirectory(path) == 1 then
-                Snacks.picker.files({ cwd = path })
-            else
-                Snacks.input.input({
-                    prompt = "The path does not exist, create it?",
-                }, function(confirm)
-                    if confirm then
-                        local parentpath = table.concat({ basedir_expanded, M.opts.org, M.opts.topic }, "/")
-                        vim.fn.mkdir(parentpath, "p")
-                        vim.system({ "gh", "repo", "clone", item.url }, { cwd = parentpath }):wait()
-                        Snacks.picker.files({ cwd = path })
-                    else
-                        Snacks.notify("Aborting")
-                        return
-                    end
-                end)
-            end
-        end,
-
-        actions = {
-            refresh_cache = {
-                name = "refresh_cache",
-                action = function()
-                    M.refresh_cache()
-                end,
-            },
-            browse = {
-                name = "browse",
-                action = function(self, item)
-                    if not item then return end
-                    self:close()
-                    Snacks.notify("Opening in the browser")
-                    vim.system({ "xdg-open", item.url })
-                end,
-            },
-            star = {
-                name = "(un)star repository",
-                action = function(self, item)
-                    if not item then return end
-
-                    Snacks.notify("(un)starring repository")
-
-                    local action = "PUT"
-                    if item.viewerHasStarred then
-                        action = "DELETE"
-                    end
-                    vim.system({ "gh", "api",
-                        "--method", action,
-                        "-H", "Accept: application/vnd.github+json",
-                        "-H", "X-GitHub-Api-Version: 2022-11-28",
-                        "/user/starred/" .. item.owner.login .. "/" .. item.name
-                    })
-                    M.refresh_cache()
+    confirm = function(picker, item)
+        picker:close()
+        local path = table.concat({ M.opts.basedir_expanded, M.opts.org, M.opts.topic, item.name }, "/")
+        if vim.fn.isdirectory(path) == 1 then
+            Snacks.picker.files({ cwd = path })
+        else
+            Snacks.input.input({
+                prompt = "The path does not exist, create it?",
+            }, function(confirm)
+                if confirm then
+                    local parentpath = table.concat({ M.opts.basedir_expanded, M.opts.org, M.opts.topic }, "/")
+                    vim.fn.mkdir(parentpath, "p")
+                    vim.system({ "gh", "repo", "clone", item.url }, { cwd = parentpath }):wait()
+                    Snacks.picker.files({ cwd = path })
+                else
+                    Snacks.notify("Aborting")
+                    return
                 end
+            end)
+        end
+    end,
+
+    actions = {
+        refresh_cache = {
+            name = "refresh_cache",
+            action = function()
+                M.refresh_cache()
+            end,
+        },
+        browse = {
+            name = "browse",
+            action = function(self, item)
+                if not item then return end
+                self:close()
+                Snacks.notify("Opening in the browser")
+                vim.system({ "xdg-open", item.url })
+            end,
+        },
+        star = {
+            name = "(un)star repository",
+            action = function(self, item)
+                if not item then return end
+
+                Snacks.notify("(un)starring repository")
+
+                local action = "PUT"
+                if item.viewerHasStarred then
+                    action = "DELETE"
+                end
+                vim.system({ "gh", "api",
+                    "--method", action,
+                    "-H", "Accept: application/vnd.github+json",
+                    "-H", "X-GitHub-Api-Version: 2022-11-28",
+                    "/user/starred/" .. item.owner.login .. "/" .. item.name
+                })
+                M.refresh_cache()
+            end
+        },
+    },
+
+    win = {
+        preview = {
+            wo = {
+                wrap = true,
+                conceallevel = 2,
+                number = false,
+                concealcursor = "nvc",
             },
         },
-
-        win = {
-            preview = {
-                wo = {
-                    wrap = true,
-                    conceallevel = 2,
-                    number = false,
-                    concealcursor = "nvc",
+        input = {
+            keys = {
+                ["<c-b>"] = {
+                    "browse",
+                    mode = { "n", "v", "x", "s", "o", "i", "c", "t" },
                 },
-            },
-            input = {
-                keys = {
-                    ["<c-b>"] = {
-                        "browse",
-                        mode = { "n", "v", "x", "s", "o", "i", "c", "t" },
-                    },
-                    ["<c-s>"] = {
-                        "star",
-                        mode = { "n", "v", "x", "s", "o", "i", "c", "t" },
-                    },
-                }
-            },
+                ["<c-s>"] = {
+                    "star",
+                    mode = { "n", "v", "x", "s", "o", "i", "c", "t" },
+                },
+            }
         },
-    }
-
-    return zalandoGithubPicker
-end
+    },
+}
 
 return M
