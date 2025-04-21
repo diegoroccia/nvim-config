@@ -2,7 +2,7 @@ return {
     {
         "echasnovski/mini.nvim",
         version = false,
-        enabled = true,
+        enabled = false,
         event = "BufReadPre",
         config = function()
             -- require("mini.ai").setup()
