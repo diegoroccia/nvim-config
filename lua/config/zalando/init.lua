@@ -1,4 +1,5 @@
 local util = require("util")
+
 local DEFAULT_SETTINGS = {
     basedir = "~/code",
     org = "zalando-build",
@@ -59,6 +60,8 @@ M.setup = function(user_opts)
         M.opts = vim.tbl_deep_extend("force", DEFAULT_SETTINGS, user_opts)
     end
 
+    M.opts.basedir_expanded = vim.fn.expand(M.opts.basedir)
+
     M.refresh_cache()
 
     vim.keymap.set("n", "<leader>pg", function()
@@ -67,8 +70,6 @@ M.setup = function(user_opts)
 end
 
 M.picker = function()
-    local basedir_expanded = vim.fn.expand(M.opts.basedir)
-
     local zalandoGithubPicker = {
 
         title = "Zalando Github Projects",
