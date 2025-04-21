@@ -16,15 +16,23 @@ local M = {
     -- can be found here https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json
     settings = {
         Lua = {
-            runtime = {
-                version = 'LuaJIT',
+            codeLens = {
+                enable = true,
+            },
+            completion = {
+                callSnippet = "Replace",
+            },
+            doc = {
+                privateName = { "^_" },
             },
             workspace = {
                 checkThirdParty = false,
                 library = {
-                    -- Depending on the usage, you might want to add additional paths here.
-                    -- "${3rd}/luv/library"
-                    -- "${3rd}/busted/library",
+                    { path = vim.env.VIMRUNTIME,   words = { "vim" } },
+                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                    { path = "LazyVim",            words = { "LazyVim" } },
+                    { path = "snacks.nvim",        words = { "Snacks" } },
+                    { path = "lazy.nvim",          words = { "LazyVim" } },
                 }
             }
         }

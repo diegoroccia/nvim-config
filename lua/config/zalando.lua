@@ -8,12 +8,9 @@ local function time_ago(date_str)
     end
 
     local target_time = os.time({
-        year = tonumber(year),
-        month = tonumber(month),
-        day = tonumber(day),
-        hour = 0,
-        min = 0,
-        sec = 0
+        year = year,
+        month = month,
+        day = day,
     })
 
     local current_time = os.time()
@@ -40,22 +37,20 @@ local function time_ago(date_str)
     end
 end
 
-local M = {}
 
-M.opts = {
+local DEFAULT_SETTINGS = {
     basedir = "~/code",
     org = "zalando-build",
     topic = "linus",
 }
 
+local M = {}
+
+M.opts = {}
+
 M.cache = {}
 
 M.refresh_cache = function()
-    -- if #M.cache > 0 and not force then
-    --     vim.print(M.cache)
-    --     return M.cache
-    -- end
-
     local Job = require "plenary.job"
 
     local jobdef = {
@@ -63,6 +58,7 @@ M.refresh_cache = function()
         args = { "repo", "list", "--no-archived", "--limit", "1000", "--source", "--json",
             "name,owner,description,repositoryTopics,updatedAt,url,viewerHasStarred,sshUrl,issues,pullRequests,stargazerCount,updatedAt",
             M.opts.org, "--topic", M.opts.topic },
+
         on_exit = function(job)
             local result = job:result()
             local ok, items = pcall(vim.json.decode, table.concat(result, ""))
@@ -72,9 +68,12 @@ M.refresh_cache = function()
                 return
             end
 
-            for _, item in ipairs(items) do
+            for idx, item in ipairs(items) do
                 item.text = item.name
-                table.insert(M.cache, item)
+                if item.viewerHasStarred then
+                    item.score_add = 10000
+                end
+                M.cache[idx] = item
             end
         end
     }
@@ -84,18 +83,24 @@ end
 
 M.finder = function()
     -- repeat vim.loop.sleep(1) until #M.cache > 0
+    if #M.cache == 0 then
+        M.refresh_cache()
+        vim.notify("Cache is empty, please wait a moment")
+        return {}
+    end
+
     return M.cache
 end
 
 
 M.setup = function(user_opts)
     if user_opts ~= nil then
-        M.opts = vim.tbl_deep_extend("force", M.opts, user_opts)
+        M.opts = vim.tbl_deep_extend("force", DEFAULT_SETTINGS, user_opts)
     end
 
     M.refresh_cache()
 
-    vim.keymap.set("n", "<leader>gh", function()
+    vim.keymap.set("n", "<leader>pg", function()
         Snacks.picker.pick(M.picker())
     end, { desc = "Zalando Github Projects" })
 end
@@ -107,9 +112,19 @@ M.picker = function()
 
         title = "Zalando Github Projects",
         finder = M.finder,
-        -- items = M.cache,
-        format = "text",
         prompt = "   ",
+
+        matcher = { sort_empty = true },
+
+        format = function(item, _)
+            local text = "   " .. item.text
+            if item.viewerHasStarred == true then
+                text = "⭐ " .. item.text
+            end
+            return {
+                { text, item.text_hl },
+            }
+        end,
 
         preview = function(ctx)
             local item = ctx.item
@@ -178,7 +193,27 @@ M.picker = function()
                     Snacks.notify("Opening in the browser")
                     vim.system({ "xdg-open", item.url })
                 end,
-            }
+            },
+            star = {
+                name = "(un)star repository",
+                action = function(self, item)
+                    if not item then return end
+
+                    Snacks.notify("(un)starring repository")
+
+                    local action = "PUT"
+                    if item.viewerHasStarred then
+                        action = "DELETE"
+                    end
+                    vim.system({ "gh", "api",
+                        "--method", action,
+                        "-H", "Accept: application/vnd.github+json",
+                        "-H", "X-GitHub-Api-Version: 2022-11-28",
+                        "/user/starred/" .. item.owner.login .. "/" .. item.name
+                    })
+                    M.refresh_cache()
+                end
+            },
         },
 
         win = {
@@ -190,27 +225,19 @@ M.picker = function()
                     concealcursor = "nvc",
                 },
             },
-            list = {
-                keys = {
-                    ["<c-r>"] = {
-                        "cache_refresh",
-                        mode = { "n", "v", "x", "s", "o", "i", "c", "t" },
-                    },
-                }
-            },
             input = {
                 keys = {
                     ["<c-b>"] = {
                         "browse",
                         mode = { "n", "v", "x", "s", "o", "i", "c", "t" },
                     },
-                    ["<c-r>"] = {
-                        "cache_refresh",
+                    ["<c-s>"] = {
+                        "star",
                         mode = { "n", "v", "x", "s", "o", "i", "c", "t" },
                     },
                 }
             },
-        }
+        },
     }
 
     return zalandoGithubPicker

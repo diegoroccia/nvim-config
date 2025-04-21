@@ -16,6 +16,27 @@ return {
                 enable = true
             },
 
+            textobjects = {
+                select = {
+                    enable = true,
+
+                    -- Automatically jump forward to textobj, similar to targets.vim
+                    lookahead = true,
+                },
+
+                move = {
+                    enable = true,
+                    set_jumps = true, -- whether to set jumps in the jumplist
+                    goto_next_start = {
+                        ["]z"] = { query = "@account_id", query_group = "highlights" }
+                    },
+                    goto_previous_start = {
+                        ["[z"] = { query = "@account_id", query_group = "highlights" }
+                    },
+                },
+
+            },
+
             incremental_selection = {
                 enable = true,
                 keymaps = {

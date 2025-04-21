@@ -12,6 +12,7 @@ return {
             { "<leader>:",       function() Snacks.picker.command_history() end, desc = "Command History" },
             { "<leader>n",       function() Snacks.picker.notifications() end,   desc = "Notification History" },
             { "<leader>f",       function() Snacks.explorer() end,               desc = "File Explorer" },
+            { "<C-e>",           function() Snacks.picker.icons() end,           desc = "Emoji Explorer",      mode = { "i" }, },
         }
     },
 }

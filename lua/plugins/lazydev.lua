@@ -5,11 +5,13 @@ return {
         enabled = true,
         opts = {
             library = {
-                { path = vim.env.VIMRUNTIME,                words = { "vim" } },
-                { path = vim.fn.stdpath("data") .. "/lazy", words = { "vim", "snacks" } },
+                { path = vim.env.VIMRUNTIME,   words = { "vim" } },
                 -- See the configuration section for more details
                 -- Load luvit types when the `vim.uv` word is found
-                { path = "${3rd}/luv/library",              words = { "vim%.uv" } },
+                { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                { path = "LazyVim",            words = { "LazyVim" } },
+                { path = "snacks.nvim",        words = { "Snacks", "snacks" } },
+                { path = "lazy.nvim",          words = { "LazyVim" } },
             },
         },
     },

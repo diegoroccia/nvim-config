@@ -3,7 +3,7 @@ vim.lsp.config('*', {
 })
 
 vim.lsp.enable({
-    "luals",
+    -- "luals",
     "gopls",
     "pyright",
     "ruff_lsp",
