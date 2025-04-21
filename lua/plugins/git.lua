@@ -6,6 +6,7 @@ local M = {
             'folke/snacks.nvim',
             'nvim-tree/nvim-web-devicons',
         },
+        event = "VeryLazy",
         config = function()
             require "octo".setup(
                 {
