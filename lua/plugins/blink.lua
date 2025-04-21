@@ -23,8 +23,8 @@ local M = {
                 },
             },
             documentation = {
-                auto_show = false,
-                auto_show_delay_ms = 500,
+                auto_show = true,
+                auto_show_delay_ms = 1000,
                 window = {
                     border = "rounded",
                     winblend = 0,
