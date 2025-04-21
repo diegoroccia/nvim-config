@@ -37,9 +37,9 @@ require("lazy").setup({
         fallback = false,                  -- Fallback to git when local plugin doesn't exist
     },
     performance = {
-        cache = {
-            enabled = true
-        },
+        -- cache = {
+        --     enabled = true
+        -- },
         rtp = {
             -- paths = {
             --   vim.fn.stdpath("data") .. "/lazy/blink-cmp-git",
