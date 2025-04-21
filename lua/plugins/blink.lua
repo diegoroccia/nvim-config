@@ -27,7 +27,7 @@ local M = {
                 auto_show_delay_ms = 1000,
                 window = {
                     border = "rounded",
-                    winblend = 0.5,
+                    winblend = 0,
                     scrollbar = true,
                 },
             },
