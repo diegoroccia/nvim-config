@@ -72,7 +72,7 @@ end
 M.picker = {
 
     title = "Zalando Github Projects",
-    finder = M.finder,
+    finder = require("zalando").sources.github_repositories,
     prompt = "   ",
 
     matcher = { sort_empty = true },
