@@ -1,58 +1,53 @@
 return {
-    {
-        "nvim-lualine/lualine.nvim",
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-            -- 'arkav/lualine-lsp-progress'
-        },
-        event = "BufReadPre",
-        opts = {
-            options = {
-                theme = "catppuccin",
-                globalstatus = true,
-                always_divide_middle = false,
-                component_separators = { left = "", right = "" },
-                section_separators = { left = "", right = "" },
-                icons_enabled = true,
-            },
-            extensions = { "quickfix", "trouble", "lazy" },
-            tabline = {
-                lualine_a = { { "buffers", mode = 2 } },
-                lualine_b = {},
-                lualine_y = { "tabs" },
-            },
-
-            inactive_sections = {
-                lualine_a = {},
-                lualine_b = {},
-                lualine_c = { "filename" },
-                lualine_x = { "location" },
-                lualine_y = {},
-            },
-            sections = {
-                lualine_x = {
-                    "trouble",
-                    -- function()
-                    --     if require("checkupdate").update_available then
-                    --         return "🚀"
-                    --     else
-                    --         return ""
-                    --     end
-                    -- end,
-                    -- {
-                    --     require("lazy.status").updates,
-                    --     cond = require("lazy.status").has_updates,
-                    --     color = { fg = "#ff9e64" },
-                    -- },
-                },
-                lualine_y = {
-                    -- "fileformat",
-                    "filetype",
-                },
-                lualine_c = {
-                    "lsp_progress",
-                }
-            },
-        }
-    },
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+			-- 'arkav/lualine-lsp-progress'
+			{
+				"NStefan002/screenkey.nvim",
+				lazy = false,
+				version = "*", -- or branch = "main", to use the latest commit
+			}
+		},
+		event = "BufReadPre",
+		opts = {
+			options = {
+				theme = "catppuccin",
+				globalstatus = true,
+				always_divide_middle = false,
+				component_separators = { left = "", right = "" },
+				section_separators = { left = "", right = "" },
+				icons_enabled = true,
+			},
+			extensions = { "quickfix", "trouble", "lazy" },
+			tabline = {
+				lualine_a = { { "buffers", mode = 2, separator = { left = '' }, right_padding = 2 } },
+				lualine_z = {
+					{ 'tabs', separator = { right = '' }, left_padding = 2 },
+				},
+			},
+			sections = {
+				lualine_a = { { 'mode', separator = { left = '' }, right_padding = 2 } },
+				lualine_b = {
+				},
+				lualine_c = {
+					"lsp_progress",
+				},
+				lualine_x = {
+					"trouble",
+					function()
+						return require("screenkey").get_keys()
+					end,
+				},
+				lualine_y = {
+					"filetype",
+					"fileformat",
+				},
+				lualine_z = {
+					{ 'location', separator = { right = '' }, left_padding = 2 },
+				},
+			},
+		}
+	},
 }

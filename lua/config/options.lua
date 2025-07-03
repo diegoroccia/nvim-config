@@ -32,7 +32,7 @@ vim.opt.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
 
-vim.opt.completeopt = "menuone,noselect"
+-- vim.opt.completeopt = "menuone,noselect"
 
 vim.opt.colorcolumn = "80,132"
 
@@ -46,16 +46,16 @@ vim.opt.conceallevel = 2
 vim.opt.autochdir = true
 
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldlevel = 4
-vim.opt.foldlevelstart = 6
 vim.opt.foldmethod = "expr"
-vim.opt.foldminlines = 6
+vim.o.foldenable = true -- enable fold
+vim.o.foldlevel = 99    -- start editing with all folds opened
 
 local space = "·"
+
 vim.opt.listchars:append {
-    tab = "│ ",
-    multispace = space,
-    lead = space,
-    trail = space,
-    nbsp = space
+	tab = "│ ",
+	multispace = space,
+	lead = space,
+	trail = space,
+	nbsp = space
 }
