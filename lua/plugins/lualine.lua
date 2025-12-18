@@ -4,13 +4,8 @@ return {
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
 			-- 'arkav/lualine-lsp-progress'
-			{
-				"NStefan002/screenkey.nvim",
-				lazy = false,
-				version = "*", -- or branch = "main", to use the latest commit
-			}
 		},
-		event = "BufReadPre",
+		event = "VeryLazy",
 		opts = {
 			options = {
 				theme = "catppuccin",
@@ -36,9 +31,6 @@ return {
 				},
 				lualine_x = {
 					"trouble",
-					function()
-						return require("screenkey").get_keys()
-					end,
 				},
 				lualine_y = {
 					"filetype",

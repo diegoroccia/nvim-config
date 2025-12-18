@@ -1,0 +1,128 @@
+--- Startup times for process: Primary (or UI client) ---
+
+times in msec
+ clock   self+sourced   self:  sourced script
+ clock   elapsed:              other lines
+
+000.002  000.002: --- NVIM STARTING ---
+000.151  000.148: event init
+000.244  000.093: early init
+000.286  000.043: locale set
+000.328  000.042: init first window
+000.651  000.323: inits 1
+000.667  000.016: window checked
+000.670  000.003: parsing arguments
+001.101  000.038  000.038: require('vim.shared')
+001.180  000.033  000.033: require('vim.inspect')
+001.217  000.030  000.030: require('vim._options')
+001.218  000.114  000.052: require('vim._editor')
+001.219  000.174  000.022: require('vim._init_packages')
+001.220  000.376: init lua interpreter
+001.275  000.054: expanding arguments
+001.293  000.019: inits 2
+001.512  000.219: init highlight
+001.528  000.015: clear screen
+001.633  000.010  000.010: require('vim.keymap')
+002.295  000.096  000.096: sourcing nvim_exec2()
+002.379  000.849  000.744: require('vim._defaults')
+002.380  000.003: init default mappings & autocommands
+002.424  000.044: --cmd commands
+002.706  000.027  000.027: sourcing /nix/store/q8x36vpi3y15klrf1fkf2bc002vi1w8d-neovim-unwrapped-0.11.5/share/nvim/runtime/ftplugin.vim
+002.731  000.011  000.011: sourcing /nix/store/q8x36vpi3y15klrf1fkf2bc002vi1w8d-neovim-unwrapped-0.11.5/share/nvim/runtime/indent.vim
+002.950  000.178  000.178: require('config.options')
+003.315  000.278  000.278: require('lazy')
+003.332  000.006  000.006: require('ffi')
+003.363  000.021  000.021: require('vim.fs')
+003.422  000.057  000.057: require('vim.uri')
+003.430  000.097  000.019: require('vim.loader')
+003.556  000.115  000.115: require('lazy.stats')
+003.620  000.048  000.048: require('lazy.core.util')
+003.627  000.004  000.004: require('vim.F')
+003.692  000.063  000.063: require('lazy.core.config')
+003.783  000.027  000.027: require('lazy.core.handler')
+003.956  000.067  000.067: require('lazy.pkg')
+003.960  000.130  000.062: require('lazy.core.meta')
+003.966  000.180  000.051: require('lazy.core.plugin')
+003.972  000.278  000.070: require('lazy.core.loader')
+004.686  000.046  000.046: require('lazy.async')
+004.775  000.033  000.033: require('lazy.manage.process')
+004.852  000.067  000.067: require('lazy.terminal')
+004.856  000.167  000.067: require('lazy.manage.task')
+004.858  000.372  000.159: require('lazy.manage.runner')
+004.860  000.426  000.054: require('lazy.manage')
+004.862  000.490  000.064: require('lazy.view.commands')
+004.915  000.033  000.033: require('lazy.core.fragments')
+005.590  000.038  000.038: require('config.snacks')
+006.221  000.048  000.048: require('lazy.core.handler.cmd')
+006.276  000.050  000.050: require('lazy.core.handler.keys')
+006.338  000.060  000.060: require('lazy.core.handler.event')
+006.379  000.036  000.036: require('lazy.core.handler.ft')
+006.414  000.010  000.010: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+006.422  000.001  000.001: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+006.434  000.001  000.001: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+006.442  000.000  000.000: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+006.751  000.001  000.001: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+006.759  000.000  000.000: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+008.211  001.034  001.034: require('vim.filetype')
+008.216  001.063  000.029: sourcing /home/diegoroccia/.config/nvim/ftdetect/kcl.lua
+011.540  003.308  003.308: sourcing /home/diegoroccia/.config/nvim/ftdetect/markdown.lua
+011.619  000.066  000.066: sourcing /home/diegoroccia/.config/nvim/ftdetect/yaml.lua
+011.647  004.604  000.168: sourcing nvim_exec2() called at /nix/store/q8x36vpi3y15klrf1fkf2bc002vi1w8d-neovim-unwrapped-0.11.5/share/nvim/runtime/filetype.lua:0
+011.650  004.651  000.047: sourcing /nix/store/q8x36vpi3y15klrf1fkf2bc002vi1w8d-neovim-unwrapped-0.11.5/share/nvim/runtime/filetype.lua
+011.653  004.688  000.037: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+012.089  000.270  000.270: require('snacks')
+012.091  000.290  000.020: sourcing /home/diegoroccia/.local/share/nvim/lazy/snacks.nvim/plugin/snacks.lua
+012.093  000.303  000.013: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+012.097  000.002  000.002: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+012.101  000.000  000.000: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+012.157  000.001  000.001: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+012.161  000.000  000.000: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+012.294  000.131  000.131: require('catppuccin')
+012.545  000.047  000.047: require('catppuccin.lib.hashing')
+013.938  001.084  001.084: sourcing /home/diegoroccia/.local/share/nvim/lazy/catppuccin/colors/catppuccin.vim
+013.970  000.002  000.002: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+014.072  000.034  000.034: sourcing /home/diegoroccia/code/zalando-personal/zalando.nvim/ftdetect/yaml.lua
+014.074  000.045  000.011: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+014.077  000.001  000.001: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+014.282  000.081  000.081: require('zalando.config')
+014.285  000.173  000.092: require('zalando')
+014.375  000.029  000.029: require('zalando.state')
+014.378  000.080  000.051: require('zalando.pickers.util')
+014.426  000.046  000.046: require('zalando.pickers.github')
+014.481  000.052  000.052: require('vim._system')
+015.703  000.087  000.087: require('zalando.pickers.zregistry')
+016.822  000.078  000.078: require('zalando.keymaps')
+018.173  000.079  000.079: require('vim.treesitter.language')
+018.200  000.023  000.023: require('vim.func')
+018.237  000.033  000.033: require('vim.func._memoize')
+018.259  000.320  000.186: require('vim.treesitter.query')
+018.298  000.037  000.037: require('vim.treesitter._range')
+018.310  000.654  000.297: require('vim.treesitter.languagetree')
+018.316  000.738  000.084: require('vim.treesitter')
+018.318  000.827  000.089: require('nvim-treesitter.compat')
+020.006  001.604  001.604: require('nvim-treesitter.parsers')
+020.167  000.147  000.147: require('nvim-treesitter.utils')
+020.176  001.818  000.066: require('nvim-treesitter.ts_utils')
+020.183  001.863  000.045: require('nvim-treesitter.tsrange')
+020.272  000.084  000.084: require('nvim-treesitter.caching')
+020.284  002.909  000.135: require('nvim-treesitter.query')
+020.299  003.028  000.119: require('nvim-treesitter.configs')
+020.302  003.344  000.316: require('nvim-treesitter-textobjects')
+020.502  000.054  000.054: require('nvim-treesitter.info')
+020.574  000.068  000.068: require('nvim-treesitter.shell_command_selectors')
+020.597  000.246  000.124: require('nvim-treesitter.install')
+020.642  000.042  000.042: require('nvim-treesitter.statusline')
+020.699  000.053  000.053: require('nvim-treesitter.query_predicates')
+020.726  000.421  000.080: require('nvim-treesitter')
+020.869  000.063  000.063: require('nvim-treesitter.textobjects.shared')
+020.875  000.141  000.077: require('nvim-treesitter.textobjects.select')
+020.951  000.067  000.067: require('vim.iter')
+021.112  000.037  000.037: require('nvim-treesitter.textobjects.attach')
+021.176  000.051  000.051: require('nvim-treesitter.textobjects.repeatable_move')
+021.182  000.158  000.071: require('nvim-treesitter.textobjects.move')
+021.723  000.078  000.078: require('nvim-treesitter.textobjects.swap')
+021.889  000.062  000.062: require('nvim-treesitter.textobjects.lsp_interop')
+021.913  004.964  000.692: sourcing /home/diegoroccia/.local/share/nvim/lazy/nvim-treesitter-textobjects/plugin/nvim-treesitter-textobjects.vim
+021.921  004.985  000.022: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+021.935  000.005  000.005: sourcing nvim_exec2() called at /home/diegoroccia/.config/nvim/init.lua:0
+021.949  000.001  000.001: sourcing nvim_exec2() called at /ho

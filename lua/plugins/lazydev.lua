@@ -2,7 +2,8 @@ return {
 	{
 		"folke/lazydev.nvim",
 		ft = "lua", -- only load on lua files
-		enabled = false,
+		enabled = true,
+		event = "BufReadPre *.lua",
 		opts = {
 			library = {
 				{ path = vim.env.VIMRUNTIME,   words = { "vim" } },

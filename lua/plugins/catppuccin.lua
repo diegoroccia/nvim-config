@@ -2,40 +2,42 @@ return {
 	{
 		"catppuccin/nvim",
 		name = "catppuccin",
+		lazy = false,
 		priority = 1000,
 		config = function()
 			require("catppuccin").setup({
-				background = { -- :h background
-					light = "latte",
-					dark = "mocha",
-				},
+				flavour = "mocha",
 				transparent_background = true,
-				term_colors = false,
-				dim_inactive = {
-					enabled = false,
+				term_colors = true,
+				dim_inactive = { enabled = false },
+				-- Minimal styling for performance
+				styles = {
+					comments = { "italic" },
+					conditionals = { "italic" },
 				},
+				-- DISABLE ALL INTEGRATIONS for maximum performance
 				integrations = {
-					blink_cmp = true,
-					gitsigns = true,
-					lsp_trouble = true,
-					markdown = true,
-					mason = true,
-					mini = {
-						enabled = true,
-					},
+					-- Only enable absolutely essential ones
 					treesitter = true,
-					treesitter_context = true,
-					which_key = true,
-					snacks = {
+					native_lsp = {
 						enabled = true,
-						indent_scope_color = "mocha", -- catppuccin color (eg. `lavender`) Default: text
+						virtual_text = {
+							errors = { "italic" },
+							warnings = { "italic" },
+						},
+						underlines = {
+							errors = { "underline" },
+							warnings = { "underline" },
+						},
 					},
-					indent_blankline = {
-						enabled = true,
-						colored_indent_levels = true,
-					},
+				},
+				compile = {
+					enabled = true,
 				},
 			})
+
+			-- Force recompilation for the new minimal config
+			require("catppuccin").compile()
 			vim.cmd.colorscheme("catppuccin")
 		end,
 	},

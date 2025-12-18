@@ -1,21 +1,24 @@
-vim.lsp.config('*', {
-	root_markers = { '.git' },
-})
+-- Defer LSP setup to improve startup time
+vim.defer_fn(function()
+	vim.lsp.config('*', {
+		root_markers = { '.git' },
+	})
 
-vim.lsp.enable({
-	"luals",
-	"gopls",
-	"pyright",
-	"ruff",
-	"tsserver",
-	"yamlls",
-	"json",
-	"cue",
-	"kcl",
-	"markdown",
-	"regal",
-	"harper_ls"
-})
+	vim.lsp.enable({
+		"luals",
+		"gopls",
+		"ty",
+		"ruff",
+		"tsserver",
+		"yamlls",
+		"json",
+		"cue",
+		"kcl",
+		"markdown",
+		"regal",
+		"harper_ls"
+	})
+end, 10)
 
 vim.api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)

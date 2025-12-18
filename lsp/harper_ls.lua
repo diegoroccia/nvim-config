@@ -1,5 +1,6 @@
 local M = {
 	cmd = { 'harper-ls', '--stdio' },
+	enabled = false,
 	filetypes = {
 		'c',
 		'cpp',

@@ -1,12 +1,19 @@
 local M = {
 	{
+		"lewis6991/gitsigns.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		cond = function()
+			return vim.fn.executable("git") == 1
+		end,
+	},
+	{
 		'pwntester/octo.nvim',
 		dependencies = {
 			'nvim-lua/plenary.nvim',
 			'folke/snacks.nvim',
 			'nvim-tree/nvim-web-devicons',
 		},
-		event = "VeryLazy",
+		cmd = "Octo",
 		config = function()
 			require "octo".setup(
 				{

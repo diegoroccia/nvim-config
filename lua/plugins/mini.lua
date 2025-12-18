@@ -3,18 +3,15 @@ return {
 		"echasnovski/mini.nvim",
 		version = false,
 		enabled = true,
-		event = "BufReadPre",
+		event = "InsertEnter",
 		config = function()
-			-- require("mini.ai").setup()
-			-- require("mini.basics").setup()
-			require("mini.pairs").setup()
-			require("mini.surround").setup()
-			-- require("mini.pick").setup()
-			-- require("mini.cursorword").setup()
-			-- require("mini.sessions").setup()
-			-- require("mini.map").setup()
-			-- require("mini.icons").setup()
-			-- require("mini.statusline").setup()
+			-- Only load the modules we actually use
+			require("mini.pairs").setup({
+				modes = { insert = true, command = false, terminal = false }
+			})
+			require("mini.surround").setup({
+				search_method = "cover_or_next"
+			})
 		end,
 	},
 }

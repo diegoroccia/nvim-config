@@ -1,3 +1,7 @@
+-- Performance optimizations
+vim.opt.synmaxcol = 300
+vim.opt.updatecount = 100
+
 vim.opt.background = "dark"
 
 -- Set highlight on search
