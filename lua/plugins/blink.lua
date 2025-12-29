@@ -21,10 +21,9 @@ local M = { {
 					enabled = true,
 				},
 			},
-			documentation = { auto_show = false, auto_show_delay_ms = 500 },
+			documentation = { auto_show = false },
 			ghost_text = {
-				enabled = true,
-				show_with_menu = false
+				enabled = true
 			},
 			menu = {
 				winblend = 1,
@@ -36,8 +35,6 @@ local M = { {
 					},
 				},
 				auto_show = false
-			},
-			trigger = {
 			},
 		},
 

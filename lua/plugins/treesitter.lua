@@ -51,8 +51,6 @@ return {
 
 		---@param opts TSConfig
 		config = function(_, opts)
-			vim.wo.foldmethod = 'expr'
-			vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 			require("nvim-treesitter.configs").setup(opts)
 		end,
 		dependencies = {
@@ -64,7 +62,6 @@ return {
 				config = function()
 					require("treesitter-context").setup({
 						enable = true,
-						throttle = true,
 					})
 				end,
 			},

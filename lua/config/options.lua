@@ -1,6 +1,6 @@
 -- Performance optimizations
 vim.opt.synmaxcol = 300
-vim.opt.updatecount = 100
+vim.opt.swapfile = false  -- Disable swap files (undofile provides persistence)
 
 vim.opt.background = "dark"
 
@@ -47,10 +47,9 @@ vim.opt.scrolloff = 4
 
 vim.opt.conceallevel = 2
 
-vim.opt.autochdir = true
-
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- Folding configuration (LSP will override foldexpr when available)
 vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.o.foldenable = true -- enable fold
 vim.o.foldlevel = 99    -- start editing with all folds opened
 

@@ -1,25 +1,16 @@
 local function augroup(name)
-    return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
+    return vim.api.nvim_create_augroup("nvim_" .. name, { clear = true })
 end
 
 vim.api.nvim_create_autocmd("FileType", {
     group = augroup("close_with_q"),
     pattern = {
-        "PlenaryTestPopup",
         "checkhealth",
-        "dbout",
         "gitsigns-blame",
-        "grug-far",
         "help",
         "lspinfo",
-        "neotest-output",
-        "neotest-output-panel",
-        "neotest-summary",
         "notify",
         "qf",
-        "spectre_panel",
-        "startuptime",
-        "tsplayground",
         "snacks_picker_list"
     },
     callback = function(event)

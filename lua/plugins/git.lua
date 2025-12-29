@@ -29,7 +29,6 @@ local M = {
 	},
 	{
 		"NeogitOrg/neogit",
-		-- event = "VeryLazy",
 		dependencies = {
 			"nvim-lua/plenary.nvim", -- required
 			"sindrets/diffview.nvim", -- optional - Diff integration
@@ -42,14 +41,14 @@ local M = {
 				function()
 					require('neogit').open({ kind = "vsplit" })
 				end,
-				desc = "commit"
+				desc = "Git commit"
 			},
 			{
 				"<leader>gp",
 				function()
 					require('neogit').open({ "push", kind = "vsplit" })
 				end,
-				desc = "commit"
+				desc = "Git push"
 			},
 		},
 		opts = {

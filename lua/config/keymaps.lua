@@ -1,6 +1,3 @@
-map("<leader>sD", Snacks.picker.diagnostics, "Diagnostics")
-map("<leader>sd", Snacks.picker.diagnostics_buffer, "Buffer Diagnostics")
-
 vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window" })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to Lower Window" })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to Upper Window" })
@@ -18,16 +15,3 @@ Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Ba
 Snacks.toggle.inlay_hints():map("\\h")
 Snacks.toggle.indent():map("\\g")
 Snacks.toggle.dim():map("\\D")
----@class snacks.toggle.Opts
----@field id? string
----@field name string
----@field get fun():boolean
----@field set fun(state:boolean)
-
----@param ... snacks.toggle.Opts
-Snacks.toggle.new({
-	id = "screen-key",
-	name = "ScreenKey",
-	get = function() return require("screenkey").is_active() end,
-	set = function(_) require("screenkey").toggle() end
-}):map("\\k")

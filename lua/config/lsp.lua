@@ -1,24 +1,22 @@
--- Defer LSP setup to improve startup time
-vim.defer_fn(function()
-	vim.lsp.config('*', {
-		root_markers = { '.git' },
-	})
+-- LSP configuration
+vim.lsp.config('*', {
+	root_markers = { '.git' },
+})
 
-	vim.lsp.enable({
-		"luals",
-		"gopls",
-		"ty",
-		"ruff",
-		"tsserver",
-		"yamlls",
-		"json",
-		"cue",
-		"kcl",
-		"markdown",
-		"regal",
-		"harper_ls"
-	})
-end, 10)
+vim.lsp.enable({
+	"luals",
+	"gopls",
+	"ty",
+	"ruff",
+	"tsserver",
+	"yamlls",
+	"json",
+	"cue",
+	"kcl",
+	"markdown",
+	"regal",
+	"harper_ls"
+})
 
 vim.api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
@@ -87,7 +85,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 		map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 		map("K", vim.lsp.buf.hover, "Hover Documentation")
-		map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 		map("<leader>=", vim.lsp.buf.format, "Format Buffer")
 	end,
 })
